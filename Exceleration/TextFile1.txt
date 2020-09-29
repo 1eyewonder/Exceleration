@@ -1,0 +1,35 @@
+﻿Commands:
+1. Sheets
+	a. Add sheet
+	b. Move sheet
+	c. Copy sheet
+	d. Delete sheet
+	e. Rename sheet
+2. Columns
+	a. Add column
+	b. Move column
+	c. Delete column
+3. Rows
+	a. Add row
+	b. Move row
+	c. Delete row
+4. Filtering
+	c. Starts with
+	d. Ends with
+	e. Contains
+	f. Does not contain
+	g. Is Empty
+	h. Is Not Empty
+	i. Is Greater Than
+	j. IsGreaterThanOrEqualTo
+	k. IsLessThan
+	l. IsLessThanOrEqualTo
+	m. IsEqualTo
+	n. IsNotEqualTo
+5. Sorting
+	a. Ascending
+	b. Descending
+	c. Will need to check column has all the same data type i.e. numeric, date, string
+6. Grouping/Ungrouping
+7. Copy/paste data
+8. Email
