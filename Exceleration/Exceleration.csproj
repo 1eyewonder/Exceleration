@@ -156,13 +156,26 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="Commands\SheetCommand.cs" />
+    <Compile Include="Build\ExcelParse.cs" />
+    <Compile Include="Commands\GenericCommands.cs" />
+    <Compile Include="Commands\SheetCommands.cs" />
     <Compile Include="DTOS\CommandItem.cs" />
+    <Compile Include="Forms\InputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InputForm.Designer.cs">
+      <DependentUpon>InputForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\CommandHelper.cs" />
-    <Compile Include="Helpers\ExcelHelper.cs" />
+    <Compile Include="Helpers\OptionHelper.cs" />
+    <Compile Include="Options\ReferenceOptions.cs" />
+    <Compile Include="Options\SheetOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="Forms\InputForm.resx">
+      <DependentUpon>InputForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

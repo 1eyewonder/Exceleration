@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exceleration.Commands
+namespace Exceleration.Options
 {
-    public class SheetCommand
+    public class SheetCommands
     {
         public const string AddSheet = "ADD SHEET";
         public const string DeleteSheet = "DELETE SHEET";

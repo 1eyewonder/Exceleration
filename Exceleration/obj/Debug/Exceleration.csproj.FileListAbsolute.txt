@@ -11,3 +11,6 @@ C:\GitHub\Exceleration\Exceleration\obj\Debug\Exceleration.csproj.CopyComplete
 C:\GitHub\Exceleration\Exceleration\obj\Debug\Exceleration.dll
 C:\GitHub\Exceleration\Exceleration\obj\Debug\Exceleration.pdb
 C:\GitHub\Exceleration\Exceleration\obj\Debug\Exceleration.Ribbon1.resources
+C:\GitHub\Exceleration\Exceleration\bin\Debug\Exceleration.Helpers.dll
+C:\GitHub\Exceleration\Exceleration\bin\Debug\Exceleration.Helpers.pdb
+C:\GitHub\Exceleration\Exceleration\obj\Debug\Exceleration.Forms.InputForm.resources

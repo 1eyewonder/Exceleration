@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Data;
-using System.IO;
-using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Text.RegularExpressions;
-using Microsoft.Office.Interop.Excel;
 
 namespace Exceleration.Helpers
 {
@@ -34,6 +28,23 @@ namespace Exceleration.Helpers
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// Creates a new worksheet in the given workbook
+        /// </summary>
+        /// <param name="workbook">Target workbook</param>
+        /// <param name="name">New sheet name</param>
+        public static void CreateNewWorksheet(this Excel.Workbook workbook, string name = "NewSheet")
+        {
+            // If worksheet name already exists
+            if (workbook.WorkSheetExists(name))
+            {
+                return;
+            }
+
+            Excel.Worksheet newWorksheet = (Excel.Worksheet)workbook.Worksheets.Add();
+            newWorksheet.Name = $"{name}";
         }
 
         /// <summary>

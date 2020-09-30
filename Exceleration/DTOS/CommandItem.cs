@@ -22,6 +22,5 @@ namespace Exceleration.DTOS
             Name = name;
             Value = value;
         }
-
     }
 }

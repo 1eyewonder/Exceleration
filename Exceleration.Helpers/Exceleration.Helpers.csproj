@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExcelHelper.cs" />
     <Compile Include="RangeHelper.cs" />
-    <Compile Include="TextHelper.cs" />
+    <Compile Include="FileHelper.cs" />
+    <Compile Include="WorkbookHelper.cs" />
     <Compile Include="WorksheetHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -36,31 +36,57 @@
         {
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
-            this.button1 = this.Factory.CreateRibbonButton();
+            this.group2 = this.Factory.CreateRibbonGroup();
+            this.AddCommandsButton = this.Factory.CreateRibbonButton();
+            this.AddSheetCommandButton = this.Factory.CreateRibbonButton();
+            this.AddTemplateButton = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
+            this.group2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
             // 
             this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tab1.Groups.Add(this.group1);
+            this.tab1.Groups.Add(this.group2);
             this.tab1.Label = "TabAddIns";
             this.tab1.Name = "tab1";
             // 
             // group1
             // 
-            this.group1.Items.Add(this.button1);
+            this.group1.Items.Add(this.AddCommandsButton);
+            this.group1.Items.Add(this.AddTemplateButton);
             this.group1.Label = "Core";
             this.group1.Name = "group1";
             // 
-            // button1
+            // group2
             // 
-            this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button1.Label = "Add Commands";
-            this.button1.Name = "button1";
-            this.button1.ShowImage = true;
-            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            this.group2.Items.Add(this.AddSheetCommandButton);
+            this.group2.Label = "Command Options";
+            this.group2.Name = "group2";
+            // 
+            // AddCommandsButton
+            // 
+            this.AddCommandsButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.AddCommandsButton.Label = "Add Commands";
+            this.AddCommandsButton.Name = "AddCommandsButton";
+            this.AddCommandsButton.ShowImage = true;
+            this.AddCommandsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            // 
+            // AddSheetCommandButton
+            // 
+            this.AddSheetCommandButton.Label = "Add Sheet Commands";
+            this.AddSheetCommandButton.Name = "AddSheetCommandButton";
+            this.AddSheetCommandButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.AddSheetCommands);
+            // 
+            // AddTemplateButton
+            // 
+            this.AddTemplateButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.AddTemplateButton.Label = "Add Template";
+            this.AddTemplateButton.Name = "AddTemplateButton";
+            this.AddTemplateButton.ShowImage = true;
+            this.AddTemplateButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.AddTemplateButton_Click);
             // 
             // Ribbon1
             // 
@@ -72,6 +98,8 @@
             this.tab1.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
+            this.group2.ResumeLayout(false);
+            this.group2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -80,7 +108,10 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton AddCommandsButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton AddSheetCommandButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton AddTemplateButton;
     }
 
     partial class ThisRibbonCollection
