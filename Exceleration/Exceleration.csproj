@@ -157,7 +157,8 @@
   -->
   <ItemGroup>
     <Compile Include="Build\ExcelParse.cs" />
-    <Compile Include="Commands\GenericCommands.cs" />
+    <Compile Include="Build\MainBuilder.cs" />
+    <Compile Include="Commands\CommandType.cs" />
     <Compile Include="Commands\SheetCommands.cs" />
     <Compile Include="DTOS\CommandItem.cs" />
     <Compile Include="Forms\InputForm.cs">
@@ -166,8 +167,8 @@
     <Compile Include="Forms\InputForm.Designer.cs">
       <DependentUpon>InputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\CommandHelper.cs" />
-    <Compile Include="Helpers\OptionHelper.cs" />
+    <Compile Include="CoreHelpers\CommandHelper.cs" />
+    <Compile Include="CoreHelpers\OptionHelper.cs" />
     <Compile Include="Options\ReferenceOptions.cs" />
     <Compile Include="Options\SheetOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -184,6 +185,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Ribbon1.resx">
       <DependentUpon>Ribbon1.cs</DependentUpon>
@@ -215,6 +217,13 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Icons\outline_add_black_18dp.png" />
+    <Content Include="Icons\outline_add_task_black_18dp.png" />
+    <Content Include="Icons\outline_class_black_18dp.png" />
+    <None Include="Icons\outline_content_copy_black_18dp.png" />
+    <None Include="Icons\outline_clear_black_18dp.png" />
+    <Content Include="Icons\outline_filter_alt_black_18dp.png" />
+    <None Include="Icons\outline_forward_black_18dp.png" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
   <ItemGroup>

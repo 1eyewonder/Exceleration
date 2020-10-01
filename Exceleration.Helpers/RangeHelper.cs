@@ -69,7 +69,7 @@ namespace Exceleration.Helpers
             if (worksheet.RangeExists(name))
             {
                 // Names range
-                namedRange = worksheet.Range[name];
+                namedRange = worksheet.Range[$"{name}"]; // issue with this code
 
                 // Assigns cell range to target
                 namedRange = worksheet.Range[range];

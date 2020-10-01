@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Exceleration.Commands
 {
-    public class GenericCommands
+    public class CommandType
     {
+        public const string Worksheet = "WORKSHEET";
+        public const string Workbook = "WORKBOOK";
         public const string Sub = "SUB";
         public const string If = "IF";
         public const string EndIf = "END IF";

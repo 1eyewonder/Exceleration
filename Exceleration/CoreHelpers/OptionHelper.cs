@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 
-namespace Exceleration.Helpers
+namespace Exceleration.CoreHelpers
 {
     public static class OptionHelper
     {

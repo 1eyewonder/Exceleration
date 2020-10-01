@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Exceleration.Helpers.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -35,16 +36,104 @@ namespace Exceleration.Helpers
         /// </summary>
         /// <param name="workbook">Target workbook</param>
         /// <param name="name">New sheet name</param>
-        public static void CreateNewWorksheet(this Excel.Workbook workbook, string name = "NewSheet")
+        public static Excel.Worksheet CreateNewWorksheet(this Excel.Workbook workbook, string name = "NewSheet")
         {
             // If worksheet name already exists
             if (workbook.WorkSheetExists(name))
             {
-                return;
+                throw new ArgumentException("Worksheet name already exists");
             }
-
+ 
+            // Adds worksheet
             Excel.Worksheet newWorksheet = (Excel.Worksheet)workbook.Worksheets.Add();
             newWorksheet.Name = $"{name}";
+
+            return newWorksheet;
+        }
+
+        /// <summary>
+        /// Moves worksheet to desired location within the current workbook
+        /// </summary>
+        /// <param name="worksheet">Worksheet being moved</param>
+        /// <param name="workbook">Active workbook the worksheet exists in</param>
+        /// <param name="positional">Desired position of worksheet. Default position is the end of the workbook.</param>
+        /// <param name="referenceName">Name of worksheet position is relative to. Default worksheet is 'Commands"</param>
+        /// <param name="referenceType">If relative worksheet is referenced through name or index</param>
+        public static void MoveWorksheet(this Excel.Worksheet worksheet, 
+            Excel.Workbook workbook,
+            PositionalEnum positional = PositionalEnum.AtEnd,
+            string referenceName = "Commands",
+            ReferenceEnum referenceType = ReferenceEnum.ByName)
+        {
+            // Gets worksheet count to prep for positional placement, if needed
+            var sheetCount = workbook.Worksheets.Count;
+            int indexValue = 1;
+            bool isAnInteger = false;
+            
+            if (referenceType == ReferenceEnum.ByIndex)
+            {
+                // Test if sheet name/index is an integer value
+                isAnInteger = int.TryParse(referenceName, out indexValue);
+
+                if (isAnInteger == false)
+                {
+                    throw new ArgumentException("Index value given is either not a string or is not an integer");
+                }
+
+                // Check index value exists within the current workbook
+                if (indexValue <= 0 || indexValue > sheetCount)
+                {
+                    throw new ArgumentException("Index value is out of range");
+                }
+            }
+            else
+            {
+                // If relative worksheet name is needed
+                if (positional != PositionalEnum.AtBeginning && positional != PositionalEnum.AtEnd)
+                {
+                    // If relative worksheet does not exist
+                    if (!workbook.WorkSheetExists(referenceName))
+                    {
+                        throw new ArgumentException("Relative worksheet name does not exist");
+                    }
+                }               
+            }          
+
+            // Moves worksheet to desired position
+            switch (positional)
+            {
+                case PositionalEnum.AtBeginning:
+                    worksheet.Move(workbook.Worksheets[1]);
+                    break;
+
+                case PositionalEnum.AtEnd:
+                    worksheet.Move(After: workbook.Worksheets[sheetCount]);
+                    break;
+
+                case PositionalEnum.After:
+                    if (referenceType == ReferenceEnum.ByIndex && isAnInteger == true)
+                    {
+                        worksheet.Move(After: workbook.Worksheets[indexValue]);
+                    }
+                    else
+                    {
+                        worksheet.Move(After: workbook.Worksheets[$"{referenceName}"]);
+                    }
+                    
+                    break;
+
+                case PositionalEnum.Before:
+                    if (referenceType == ReferenceEnum.ByIndex && isAnInteger == true)
+                    {
+                        worksheet.Move(workbook.Worksheets[indexValue]);
+                    }
+                    else
+                    {
+                        worksheet.Move(workbook.Worksheets[$"{referenceName}"]);
+                    }
+                        
+                    break;
+            }
         }
 
         /// <summary>
@@ -100,19 +189,30 @@ namespace Exceleration.Helpers
         /// Copies Excel workseheet and moves it to the end of the workbook
         /// </summary>
         /// <param name="workbook">Target workbook</param>
-        /// <param name="sheet">Worksheet to be copied</param>
-        /// <param name="name">New worksheet name</param>
-        public static void CopySheet(this Excel.Workbook workbook, Excel.Worksheet sheet, string name)
+        /// <param name="name">Name of worksheet to be copied</param>
+        /// <param name="newName">New worksheet name</param>
+        public static void CopySheet(this Excel.Workbook workbook, string name, string newName = "NewSheet")
         {
-            sheet.Copy(Type.Missing, sheet);
+            Excel.Worksheet worksheet = null;
 
-            Excel.Worksheet newsheet = workbook.Sheets[sheet.Index + 1];
+            if (workbook.WorkSheetExists(name))
+            {
+                if (!workbook.WorkSheetExists(newName))
+                {
+                    worksheet = ((Excel.Worksheet)workbook.Worksheets[name]);
+                    worksheet.Copy(Type.Missing, worksheet);
+                    ((Excel.Worksheet)workbook.Worksheets[worksheet.Index + 1]).Name = newName;
+                }
+                else
+                {
+                    throw new ArgumentException("New name already has a worksheet with the same name");
+                }
 
-            newsheet.Name = $"{name}";
-
-            Excel.Worksheet newlocation = workbook.Sheets[workbook.Worksheets.Count];
-
-            newsheet.Move(Type.Missing, newlocation);
+            }
+            else
+            {
+                throw new ArgumentException("Worksheet does not exist");
+            }
         }
 
         /// <summary>

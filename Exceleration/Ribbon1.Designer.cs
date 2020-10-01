@@ -38,8 +38,9 @@
             this.group1 = this.Factory.CreateRibbonGroup();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.AddCommandsButton = this.Factory.CreateRibbonButton();
-            this.AddSheetCommandButton = this.Factory.CreateRibbonButton();
             this.AddTemplateButton = this.Factory.CreateRibbonButton();
+            this.RunButton = this.Factory.CreateRibbonButton();
+            this.AddSheetCommandButton = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
@@ -57,6 +58,7 @@
             // 
             this.group1.Items.Add(this.AddCommandsButton);
             this.group1.Items.Add(this.AddTemplateButton);
+            this.group1.Items.Add(this.RunButton);
             this.group1.Label = "Core";
             this.group1.Name = "group1";
             // 
@@ -69,24 +71,37 @@
             // AddCommandsButton
             // 
             this.AddCommandsButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.AddCommandsButton.Image = global::Exceleration.Properties.Resources.outline_add_task_black_18dp;
             this.AddCommandsButton.Label = "Add Commands";
             this.AddCommandsButton.Name = "AddCommandsButton";
             this.AddCommandsButton.ShowImage = true;
             this.AddCommandsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
             // 
-            // AddSheetCommandButton
-            // 
-            this.AddSheetCommandButton.Label = "Add Sheet Commands";
-            this.AddSheetCommandButton.Name = "AddSheetCommandButton";
-            this.AddSheetCommandButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.AddSheetCommands);
-            // 
             // AddTemplateButton
             // 
             this.AddTemplateButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.AddTemplateButton.Image = global::Exceleration.Properties.Resources.outline_class_black_18dp;
             this.AddTemplateButton.Label = "Add Template";
             this.AddTemplateButton.Name = "AddTemplateButton";
             this.AddTemplateButton.ShowImage = true;
             this.AddTemplateButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.AddTemplateButton_Click);
+            // 
+            // RunButton
+            // 
+            this.RunButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.RunButton.Image = global::Exceleration.Properties.Resources.outline_forward_black_18dp;
+            this.RunButton.Label = "Run Code";
+            this.RunButton.Name = "RunButton";
+            this.RunButton.ShowImage = true;
+            this.RunButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.RunButton_Click);
+            // 
+            // AddSheetCommandButton
+            // 
+            this.AddSheetCommandButton.Image = global::Exceleration.Properties.Resources.outline_add_black_18dp;
+            this.AddSheetCommandButton.Label = "Add Sheet Commands";
+            this.AddSheetCommandButton.Name = "AddSheetCommandButton";
+            this.AddSheetCommandButton.ShowImage = true;
+            this.AddSheetCommandButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.AddSheetCommands);
             // 
             // Ribbon1
             // 
@@ -112,6 +127,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton AddSheetCommandButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton AddTemplateButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton RunButton;
     }
 
     partial class ThisRibbonCollection

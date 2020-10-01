@@ -9,7 +9,7 @@ namespace Exceleration.Options
     public class ReferenceOptions
     {
         public const string ByName = "BY NAME";
-        public const string ByValue = "BY VALUE";
+        public const string ByIndex = "BY INDEX";
         public const string Blank = "";
     }
 }

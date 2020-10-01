@@ -132,12 +132,12 @@ namespace Exceleration.Build
             {
                 var command = GetString(row, commandColumn).ToUpper();
 
-                if (command == GenericCommands.If)
+                if (command == CommandType.If)
                 {
                     startRepeat++;
                 }
 
-                if (command == GenericCommands.EndIf)
+                if (command == CommandType.EndIf)
                 {
                     endRepeat++;
                 }
@@ -168,12 +168,12 @@ namespace Exceleration.Build
             {
                 var command = GetString(row, commandColumn).ToUpper();
 
-                if (command == GenericCommands.If)
+                if (command == CommandType.If)
                 {
                     ifcount++;
                 }
 
-                if (command == GenericCommands.EndIf)
+                if (command == CommandType.EndIf)
                 {
                     endIfCount++;
                     endIfLocations.Add(row);
@@ -202,12 +202,12 @@ namespace Exceleration.Build
             {
                 var command = GetString(row, commandColumn).ToUpper();
 
-                if (command == GenericCommands.Repeat)
+                if (command == CommandType.Repeat)
                 {
                     repeatCount++;
                 }
 
-                if (command == GenericCommands.EndRepeat)
+                if (command == CommandType.EndRepeat)
                 {
                     endRepeatCount++;
                     endRepeatLocation.Add(row);
@@ -234,12 +234,12 @@ namespace Exceleration.Build
             {
                 var command = GetString(row, commandColumn).ToUpper();
 
-                if (command == GenericCommands.Repeat)
+                if (command == CommandType.Repeat)
                 {
                     startRepeat++;
                 }
 
-                if (command == GenericCommands.EndRepeat)
+                if (command == CommandType.EndRepeat)
                 {
                     endRepeat++;
                 }
