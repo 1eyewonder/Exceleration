@@ -9,6 +9,7 @@ namespace Exceleration.Commands
     public class CommandType
     {
         public const string Worksheet = "WORKSHEET";
+        public const string Range = "RANGE";
         public const string Workbook = "WORKBOOK";
         public const string Sub = "SUB";
         public const string If = "IF";

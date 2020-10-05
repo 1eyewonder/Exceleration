@@ -1,4 +1,5 @@
 ﻿using Exceleration.Commands;
+using Exceleration.CoreHelpers;
 using Exceleration.Helpers.Enums;
 using Exceleration.Options;
 using System;
@@ -12,11 +13,13 @@ namespace Exceleration.Build
 {   
     public class MainBuilder : ExcelParse
     {
-        private SheetCommands _sheetCommands;
+        private WorkbookCommands _workbookCommands;
+        private RangeCommands _rangeCommands;
 
         public MainBuilder(Excel.Worksheet worksheet) : base(worksheet)
         {
-            _sheetCommands = new SheetCommands();
+            _workbookCommands = new WorkbookCommands();
+            _rangeCommands = new RangeCommands();
         }
 
         public List<string> Run(bool startMethod, string rangeName = "", string rangeParameter = "")
@@ -69,77 +72,41 @@ namespace Exceleration.Build
                
                 switch (commandType)
                 {
-                    #region Worksheet
-                    case CommandType.Worksheet:
+                    #region Workbook
+                    case CommandType.Workbook:
 
                         switch (command)
                         {
-                            case SheetCommands.AddSheet:
-                                _sheetCommands.AddSheetCommand(workbook, value);                                                               
+                            case WorkbookCommands.AddSheet:
+                                _workbookCommands.AddSheetCommand(workbook, value);                                                               
                                 break;
 
-                            case SheetCommands.CopySheet:
-                                _sheetCommands.CopySheetCommand(workbook, value, name);
+                            case WorkbookCommands.CopySheet:
+                                referenceType = OptionHelper.GetReferenceEnumFromString(reference);
+                                _workbookCommands.CopySheetCommand(workbook, value, name, referenceType);
                                 break;
 
-                            case SheetCommands.DeleteSheet:
-                                _sheetCommands.DeleteSheetCommand(workbook, value);
+                            case WorkbookCommands.DeleteSheet:
+                                referenceType = OptionHelper.GetReferenceEnumFromString(reference);
+                                _workbookCommands.DeleteSheetCommand(workbook, value);
                                 break;
 
-                            case SheetCommands.MoveSheet:
-                                // Determines position desired by user
-                                switch (option)
-                                {
-                                    case (SheetOptions.After):
-                                        positional = PositionalEnum.After;
-                                        break;
-                                    case (SheetOptions.AtBeginning):
-                                        positional = PositionalEnum.AtBeginning;
-                                        break;
-                                    case (SheetOptions.AtEnd):
-                                        positional = PositionalEnum.AtEnd;
-                                        break;
-                                    case (SheetOptions.Before):
-                                        positional = PositionalEnum.Before;
-                                        break;
-                                    default:
-                                        positional = PositionalEnum.AtEnd;
-                                        break;
-                                }
+                            case WorkbookCommands.MoveSheet:
 
-                                // If relative sheet for positioning is required
-                                if (positional != PositionalEnum.AtBeginning && positional != PositionalEnum.AtEnd)
-                                {
-                                    // Checks positional sheet reference is declared
-                                    if (string.IsNullOrEmpty(reference) && string.IsNullOrEmpty(name))
-                                    {
-                                        break; // add log error
-                                    }
-                                }
+                                positional = OptionHelper.GetPositionalEnumFromString(option);
+                                referenceType = OptionHelper.GetReferenceEnumFromString(reference);
+                                _workbookCommands.MoveWorksheetCommand(workbook, value, positional, name, referenceType);
+                                break;
 
-                                // Checks if specific name is entered
-                                if (string.IsNullOrEmpty(value))
-                                {
-                                    throw new ArgumentException("Must enter a desired worksheet name in the value column");
-                                }
+                            case WorkbookCommands.TargetSheet:
 
-                                switch (reference)
-                                {
-                                    case (ReferenceOptions.ByName):
-                                        referenceType = ReferenceEnum.ByName;
-                                        break;
+                                referenceType = OptionHelper.GetReferenceEnumFromString(reference);
+                                _workbookCommands.TargetSheetCommand(workbook, value, referenceType);
+                                break;
 
-                                    case (ReferenceOptions.ByIndex):
-                                        referenceType = ReferenceEnum.ByIndex;
-                                        break;
-
-                                    default:
-                                        referenceType = ReferenceEnum.ByName;
-                                        break;
-
-                                }
-
-                                _sheetCommands.MoveWorksheetCommand(workbook, value, positional, name, referenceType);
+                            case WorkbookCommands.RenameSheet:
+                                referenceType = OptionHelper.GetReferenceEnumFromString(reference);
+                                _workbookCommands.RenameSheetCommand(workbook, value, name, referenceType);
                                 break;
                         }
 
@@ -147,12 +114,64 @@ namespace Exceleration.Build
 
                     #endregion
 
-                    #region Workbook
-                    case CommandType.Workbook:
+                    #region Worksheet
+                    case CommandType.Worksheet:
 
                         break;
 
                     #endregion
+
+                    #region Range
+                    case CommandType.Range:
+                        switch (command)
+                        {
+                            case RangeCommands.AddNamedRange:
+                                switch(option)
+                                {
+                                    case RangeOptions.WorkbookScope:
+                                        _rangeCommands.AddWorkbookNamedRange(workbook, name, value);
+                                        break;
+                                    case RangeOptions.WorksheetScope:
+                                        _rangeCommands.AddWorksheetNamedRange(workbook.ActiveSheet, name, value);
+                                        break;
+                                    default:
+                                        _rangeCommands.AddWorkbookNamedRange(workbook, name, value);
+                                        break;
+                                }
+                                
+                                break;
+
+                            case RangeCommands.DeleteRangeContents:
+                                _rangeCommands.DeleteRangeContentsCommand(workbook.ActiveSheet, value, referenceType);
+                                break;
+
+                            case RangeCommands.RemoveNamedRange:
+                                _rangeCommands.RemoveNamedRangeCommand(workbook.ActiveSheet, value);
+                                break;
+
+                            case RangeCommands.RenameRange:
+                                switch (option)
+                                {
+                                    case RangeOptions.WorkbookScope:
+                                        _rangeCommands.RenameWorkbookRange(workbook, value, name);
+                                        break;
+                                    case RangeOptions.WorksheetScope:
+                                        _rangeCommands.RenameWorksheetRange(workbook.ActiveSheet, value, name);
+                                        break;
+                                    default:
+                                        _rangeCommands.RenameWorkbookRange(workbook, value, name);
+                                        break;
+                                }
+
+                                break;
+
+                            case RangeCommands.SetNamedRange:
+                                _rangeCommands.SetNamedRangeCommand(workbook.ActiveSheet, name, value);
+                                break;
+                        }
+
+                        break;
+                        #endregion
                 }
 
                 i++;

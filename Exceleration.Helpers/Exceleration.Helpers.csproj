@@ -44,6 +44,10 @@
     <Compile Include="Enums\PositionalEnum.cs" />
     <Compile Include="Enums\ReferenceEnum.cs" />
     <Compile Include="ExcelHelper.cs" />
+    <Compile Include="Extensions\ExcelApplicationExtensions.cs" />
+    <Compile Include="Extensions\ExcelRangeExtensions.cs" />
+    <Compile Include="Extensions\ExcelWorkbookExtensions.cs" />
+    <Compile Include="Extensions\ExcelWorksheetExtensions.cs" />
     <Compile Include="RangeHelper.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="WorkbookHelper.cs" />
@@ -78,6 +82,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Styling\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
