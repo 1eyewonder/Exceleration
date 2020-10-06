@@ -34,8 +34,8 @@ namespace Exceleration.Helpers.Extensions
         /// <summary>
         /// Checks if cell reference represents a valid worksheet range
         /// </summary>
-        /// <param name="worksheet"></param>
-        /// <param name="range"></param>
+        /// <param name="worksheet">Target worksheet</param>
+        /// <param name="range">Range</param>
         /// <returns></returns>
         public static bool IsRange(this Excel.Worksheet worksheet, string range)
         {
@@ -73,14 +73,13 @@ namespace Exceleration.Helpers.Extensions
         /// </summary>
         /// <param name="worksheet">Target worksheet</param>
         /// <param name="name">Name of range being created</param>
-        /// <param name="range">Target range</param>
-        ///  i.e. worksheet.CreatedNamedRange("Testing","H2:H10")
+        /// <param name="range">Target range. Must be within the current worksheet</param>
         public static void CreateNamedRange(this Excel.Worksheet worksheet, string name, string range)
         {
             // If cell range isn't valid
             if (!worksheet.IsRange(range))
             {
-                throw new ArgumentException($"Range entered {range} is not a valid range");
+                throw new ArgumentException($"Range entered {range} is not a valid range or does not exist within the current worksheet");
             }
 
             // If named range exists
@@ -90,7 +89,6 @@ namespace Exceleration.Helpers.Extensions
             }
             else
             {
-
                 worksheet.Names.Add(name, worksheet.Range[$"{range}"]);
             }
         }
@@ -113,13 +111,33 @@ namespace Exceleration.Helpers.Extensions
                 }
                 else
                 {
-                    throw new ArgumentException("New range name already exists. Please rename to something else.");
+                    throw new ArgumentException($"New range name {newName} already exists. Please rename to something else.");
                 }
             }
             else
             {
-                throw new ArgumentException($"Range {oldName} does not exist");
+                throw new ArgumentException($"Range {oldName} does not exist on {worksheet.Name}");
             }
+        }
+
+        /// <summary>
+        /// Gets name ranges from worksheet
+        /// </summary>
+        /// <param name="worksheet"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static Excel.Name GetNamedRange(this Excel.Worksheet worksheet, string name)
+        {
+            var names = worksheet.Names;
+            foreach (Excel.Name item in worksheet.Names)
+            {
+                if (item.Name.Split('!').Last() == name)
+                {
+                    return item;
+                }
+            }
+
+            throw new ArgumentException($"Name {name} does not exist");
         }
 
         /// <summary>
@@ -147,7 +165,7 @@ namespace Exceleration.Helpers.Extensions
             {
                 if (worksheet.NamedRangeExists(range))
                 {
-                    worksheet.Range[$"{range}"].Delete();
+                    worksheet.Range[$"{range}"].Cells.ClearContents();
                 }
                 else
                 {
@@ -158,13 +176,23 @@ namespace Exceleration.Helpers.Extensions
             {
                 if (worksheet.IsRange(range))
                 {
-                    worksheet.Range[$"{range}"].Delete();
+                    worksheet.Range[$"{range}"].Cells.ClearContents();
                 }
                 else
                 {
                     throw new ArgumentException($"Range, [{range}], is not a valid range");
                 }
             }
+        }
+
+        /// <summary>
+        /// Removes named range from worksheet scope
+        /// </summary>
+        /// <param name="worksheet"></param>
+        /// <param name="name"></param>
+        public static void RemoveNamedRange(this Excel.Worksheet worksheet, string name)
+        {
+            worksheet.GetNamedRange(name).Delete();
         }
     }
 }

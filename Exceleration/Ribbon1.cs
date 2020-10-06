@@ -145,7 +145,7 @@ namespace Exceleration
             #region Styling
             // Styles the command table
             var stylingRange = (Excel.Range)workSheet.Range["A:F"];
-            stylingRange.ColumnWidth = 30;
+            stylingRange.ColumnWidth = 45;
             stylingRange.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             stylingRange.Cells.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
             stylingRange.Cells.WrapText = true;
@@ -155,6 +155,25 @@ namespace Exceleration
             topRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.CornflowerBlue);
             topRange.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
             topRange.Font.Bold = true;
+
+            // Alternates color command table rows for easier reading
+            for (int o = 3; o <= i; o++)
+            {
+                Excel.Range colorRange;
+                if (o%2 != 0)
+                {
+                    colorRange = workSheet.Range[$"A{o}:F{o}"];
+                    colorRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.LightGray);
+                    colorRange.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
+                }
+            }
+
+            // Adds all around border to command table
+            Excel.Range borderRange = workSheet.Range[$"A1:F{i-1}"];
+            borderRange.Cells.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+
+            // Adds filter ability to command table for users
+            borderRange.AutoFilter(1);
 
             // Styles the options tables
             stylingRange = (Excel.Range)workSheet.Range["J:L"];

@@ -10,6 +10,7 @@ namespace Exceleration.Helpers.Extensions
 {
     public static class ExcelWorkbookExtensions
     {
+        #region Worksheets
         /// <summary>
         /// Checks if worksheet with given name exists
         /// </summary>
@@ -399,7 +400,9 @@ namespace Exceleration.Helpers.Extensions
                 throw new ArgumentException($"Worksheet index [{index}] does not exist in this workbook.");
             }
         }
+        #endregion
 
+        #region Ranges
         /// <summary>
         /// Deletes any named ranges who have lost their cell references
         /// </summary>
@@ -425,6 +428,32 @@ namespace Exceleration.Helpers.Extensions
         }
 
         /// <summary>
+        /// Checks if range exists in the workbook
+        /// </summary>
+        /// <param name="workbook">Target workbook</param>
+        /// <param name="range">Range</param>
+        /// <returns></returns>
+        public static bool IsRange(this Excel.Workbook workbook, string range)
+        {
+            foreach (Excel.Worksheet worksheet in workbook.Worksheets)
+            {
+                try
+                {
+                    if (worksheet.IsRange(range))
+                    {
+                        return true;
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Checks if named range exists in the workbook
         /// </summary>
         /// <param name="workbook">Target workbook</param>
@@ -443,18 +472,20 @@ namespace Exceleration.Helpers.Extensions
 
             if (notOnWorksheet == true)
             {
+                // Adds all worksheet named ranges to sheet list (removes worksheet identifier i.e. Sheet1!, etc.)
                 foreach (Excel.Worksheet sheet in workbook.Worksheets)
                 {
                     sheetList.AddRange(sheet.NamedRanges());
                 }
 
+                // Only keeps unique workbook named ranges on filtered list
                 filteredList = workbookList.Except(sheetList).ToList();
                 return filteredList.Exists(x => x == name);
             }
             else
             {
                 return workbookList.Exists(x => x == name);
-            }          
+            }
         }
 
         /// <summary>
@@ -481,27 +512,31 @@ namespace Exceleration.Helpers.Extensions
         /// <param name="workbook">Target workbook</param>
         /// <param name="name">Name of range being created</param>
         /// <param name="range">Target range</param>
-        /// i.e. workbook.CreatedNamedRange("Testing","H2:H10")
+        /// <param name="scope">Scope named range is to be created on</param>
         public static void CreateNamedRange(this Excel.Workbook workbook, string name, string range)
         {
             Excel.Worksheet worksheet = workbook.ActiveSheet;
+            string worksheetName;
 
-            // If cell range isn't valid
-            if (!worksheet.IsRange(range))
-            {
-                throw new ArgumentException($"Range entered {range} is not a valid range");
-            }
-
-            // If named range exists
+            // Checks named range exists
             if (workbook.NamedRangeExists(name))
             {
                 throw new ArgumentException($"Name {name} already exists");
             }
-            else
-            {
 
-                workbook.Names.Add(name, worksheet.Range[$"{range}"]);
+            if (!workbook.IsRange(range))
+            {
+                throw new ArgumentException($"Range entered {range} is not a valid range for the workbook");
             }
+
+            // If range exists on another worksheet
+            if (range.Contains("!"))
+            {
+                worksheetName = range.Split('!').First();
+                worksheet = workbook.GetWorksheet(worksheetName);
+            }
+
+            workbook.Names.Add(name, worksheet.Range[range]);
         }
 
         /// <summary>
@@ -510,7 +545,7 @@ namespace Exceleration.Helpers.Extensions
         /// <param name="workbook"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        private static Excel.Name GetNamedRange(this Excel.Workbook workbook, string name)
+        public static Excel.Name GetNamedRange(this Excel.Workbook workbook, string name)
         {
             var names = workbook.Names;
             foreach (Excel.Name item in workbook.Names)
@@ -549,5 +584,17 @@ namespace Exceleration.Helpers.Extensions
                 throw new ArgumentException($"Range {oldName} does not exist");
             }
         }
+
+        /// <summary>
+        /// Removes named range from workbook scope
+        /// </summary>
+        /// <param name="workbook"></param>
+        /// <param name="name"></param>
+        public static void RemoveNamedRange(this Excel.Workbook workbook, string name)
+        {
+            workbook.GetNamedRange(name).Delete();
+        }
+        #endregion
+
     }
 }

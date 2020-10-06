@@ -19,27 +19,23 @@ namespace Exceleration.Commands
         public const string RenameRange = "RENAME RANGE";
         public const string DeleteRangeContents = "DELETE RANGE CONTENTS";
 
-        public void AddWorksheetNamedRange(Excel.Worksheet worksheet, string name, string range)
-        {
-            worksheet.CreateNamedRange(name, range);
-        }
-
         public void AddWorkbookNamedRange(Excel.Workbook workbook, string name, string range)
         {
             workbook.CreateNamedRange(name, range);
         }
 
-        public void SetNamedRangeCommand(Excel.Worksheet worksheet, string name, string range)
+        public void AddWorksheetNamedRange(Excel.Worksheet worksheet, string name, string range)
         {
-            // If named range exists
-            if (worksheet.NamedRangeExists(name))
+            worksheet.CreateNamedRange(name, range);
+        }
+
+        public void SetNamedRangeCommand(Excel.Workbook workbook, string name, string range)
+        {
+            if (workbook.NamedRangeExists(name))
             {
-                // If valid range
-                if (worksheet.IsRange(range))
+                if (workbook.IsRange(range))
                 {
-                    //worksheet.Range[name].Range[range]; 
-                    worksheet.Names.Item(worksheet.Range[$"{name}"], Type.Missing, worksheet.Range[range]);
-                    
+                    workbook.GetNamedRange(name).RefersToLocal = "=" + range;
                 }
                 else
                 {
@@ -52,9 +48,14 @@ namespace Exceleration.Commands
             }
         }
 
-        public void RemoveNamedRangeCommand(Excel.Worksheet worksheet, string name)
+        public void RemoveWorksheetNamedRange(Excel.Worksheet worksheet, string name)
         {
-            worksheet.DeleteRangeContents(name);
+            worksheet.RemoveNamedRange(name);
+        }
+
+        public void RemoveWorkbookNamedRange(Excel.Workbook workbook, string name)
+        {
+            workbook.RemoveNamedRange(name);
         }
 
         public void RenameWorkbookRange(Excel.Workbook workbook, string oldName, string newName)

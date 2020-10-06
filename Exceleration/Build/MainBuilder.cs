@@ -27,18 +27,26 @@ namespace Exceleration.Build
             Excel.Range startCell = null;
             Excel.Workbook workbook = Globals.ThisAddIn.Application.ActiveWorkbook;
 
-            // Looks for range to start on
-            if (string.IsNullOrEmpty(rangeName))
+            try
             {
-                // Starting cell is named range that matches the worksheet the run command is being called on
-                startCell = _worksheet.Range[_worksheet.Name + "Type"];
-            }
-            else
-            {
-                startCell = _worksheet.Range[rangeName];
-            }
+                // Looks for range to start on
+                if (string.IsNullOrEmpty(rangeName))
+                {
+                    // Starting cell is named range that matches the worksheet the run command is being called on
+                    startCell = _worksheet.Range[_worksheet.Name + "Type"];
+                }
+                else
+                {
+                    startCell = _worksheet.Range[rangeName];
+                }
 
-            if (startCell == null) throw new Exception("Could not find start range");
+                if (startCell == null) throw new Exception("Could not find start range");
+            }
+            catch
+            {
+                throw new ArgumentException("Issue finding starting code cell. Please check that start cells match their respective sheet names.");
+            }
+            
 
             // Sets starting integers for columns
             var typeColumn = startCell.Column;
@@ -126,7 +134,7 @@ namespace Exceleration.Build
                         switch (command)
                         {
                             case RangeCommands.AddNamedRange:
-                                switch(option)
+                                switch (option)
                                 {
                                     case RangeOptions.WorkbookScope:
                                         _rangeCommands.AddWorkbookNamedRange(workbook, name, value);
@@ -138,15 +146,29 @@ namespace Exceleration.Build
                                         _rangeCommands.AddWorkbookNamedRange(workbook, name, value);
                                         break;
                                 }
-                                
                                 break;
 
                             case RangeCommands.DeleteRangeContents:
+
+                                referenceType = OptionHelper.GetReferenceEnumFromString(reference);
                                 _rangeCommands.DeleteRangeContentsCommand(workbook.ActiveSheet, value, referenceType);
                                 break;
 
                             case RangeCommands.RemoveNamedRange:
-                                _rangeCommands.RemoveNamedRangeCommand(workbook.ActiveSheet, value);
+
+                                switch(option)
+                                {
+                                    case RangeOptions.WorkbookScope:
+                                        _rangeCommands.RemoveWorkbookNamedRange(workbook, value);
+                                        break;
+                                    case RangeOptions.WorksheetScope:
+                                        _rangeCommands.RemoveWorksheetNamedRange(workbook.ActiveSheet, value);
+                                        break;
+                                    default:
+                                        _rangeCommands.RemoveWorkbookNamedRange(workbook, value);
+                                        break;
+                                }
+
                                 break;
 
                             case RangeCommands.RenameRange:
@@ -166,7 +188,7 @@ namespace Exceleration.Build
                                 break;
 
                             case RangeCommands.SetNamedRange:
-                                _rangeCommands.SetNamedRangeCommand(workbook.ActiveSheet, name, value);
+                                _rangeCommands.SetNamedRangeCommand(workbook, name, value);
                                 break;
                         }
 
