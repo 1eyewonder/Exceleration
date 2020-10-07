@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using Exceleration.Helpers.Enums;
 
 namespace Exceleration.CoreHelpers
 {
@@ -28,9 +29,9 @@ namespace Exceleration.CoreHelpers
             return optionsList;
         }
 
-        public static List<string> GetSheetOptions()
+        public static List<string> GetWorkbookOptions()
         {
-            var options = new SheetOptions();
+            var options = new WorkbookOptions();
             return options.GetFieldValues();
         }   
 
@@ -38,6 +39,48 @@ namespace Exceleration.CoreHelpers
         {
             var options = new ReferenceOptions();
             return options.GetFieldValues();
+        }
+
+        public static List<string> GetRangeOptions()
+        {
+            var options = new RangeOptions();
+            return options.GetFieldValues();
+        }
+
+        public static ReferenceEnum GetReferenceEnumFromString(string reference)
+        {
+            switch (reference)
+            {
+                case (ReferenceOptions.ByName):
+                    return ReferenceEnum.ByName;
+
+                case (ReferenceOptions.ByIndex):
+                    return ReferenceEnum.ByIndex;
+
+                default:
+                    return ReferenceEnum.ByName;
+            }
+        }
+
+        public static PositionalEnum GetPositionalEnumFromString(string position)
+        {
+            switch (position)
+            {
+                case (WorkbookOptions.After):
+                    return PositionalEnum.After;
+
+                case (WorkbookOptions.AtBeginning):
+                    return PositionalEnum.AtBeginning;
+
+                case (WorkbookOptions.AtEnd):
+                    return PositionalEnum.AtEnd;
+
+                case (WorkbookOptions.Before):
+                    return PositionalEnum.Before;
+
+                default:
+                    return PositionalEnum.AtEnd;
+            }
         }
     }
 }

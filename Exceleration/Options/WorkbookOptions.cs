@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Exceleration.Options
 {
-    public class SheetOptions
+    public class WorkbookOptions
     {
         public const string AtBeginning = "AT BEGINNING";
         public const string AtEnd = "AT END";

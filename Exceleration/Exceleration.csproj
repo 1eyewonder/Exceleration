@@ -159,7 +159,8 @@
     <Compile Include="Build\ExcelParse.cs" />
     <Compile Include="Build\MainBuilder.cs" />
     <Compile Include="Commands\CommandType.cs" />
-    <Compile Include="Commands\SheetCommands.cs" />
+    <Compile Include="Commands\RangeCommands.cs" />
+    <Compile Include="Commands\WorkbookCommands.cs" />
     <Compile Include="DTOS\CommandItem.cs" />
     <Compile Include="Forms\InputForm.cs">
       <SubType>Form</SubType>
@@ -169,8 +170,9 @@
     </Compile>
     <Compile Include="CoreHelpers\CommandHelper.cs" />
     <Compile Include="CoreHelpers\OptionHelper.cs" />
+    <Compile Include="Options\RangeOptions.cs" />
     <Compile Include="Options\ReferenceOptions.cs" />
-    <Compile Include="Options\SheetOptions.cs" />
+    <Compile Include="Options\WorkbookOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -224,6 +226,8 @@
     <None Include="Icons\outline_clear_black_18dp.png" />
     <Content Include="Icons\outline_filter_alt_black_18dp.png" />
     <None Include="Icons\outline_forward_black_18dp.png" />
+    <None Include="Icons\outline_view_week_black_18dp.png" />
+    <None Include="Icons\outline_table_view_black_18dp.png" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
   <ItemGroup>
