@@ -547,10 +547,9 @@ namespace Exceleration.Helpers.Extensions
         /// <returns></returns>
         public static Excel.Name GetNamedRange(this Excel.Workbook workbook, string name)
         {
-            var names = workbook.Names;
             foreach (Excel.Name item in workbook.Names)
             {
-                if (item.Name == name)
+                if (item.ShortName() == name)
                 {
                     return item;
                 }
@@ -594,7 +593,40 @@ namespace Exceleration.Helpers.Extensions
         {
             workbook.GetNamedRange(name).Delete();
         }
-        #endregion
 
+        /// <summary>
+        /// Deletes the workbook's range contents
+        /// </summary>
+        /// <param name="workbook"></param>
+        /// <param name="range"></param>
+        /// <param name="isNamedRange"></param>
+        public static void DeleteRangeContents(this Excel.Workbook workbook, string range, bool isNamedRange = true)
+        {
+            string newRange;
+            string worksheetName;
+            Excel.Worksheet worksheet;
+
+            if (isNamedRange)
+            {
+                if (workbook.NamedRangeExists(range))
+                {
+                    workbook.GetNamedRange(range).RefersToRange.Cells.Delete();
+                }
+            }
+            else
+            {
+                if (workbook.IsRange(range))
+                {
+                    if (range.Contains('!'))
+                    {
+                        worksheetName = range.Split('!').First();
+                        newRange = range.Split('!').Last();
+                        worksheet = workbook.GetWorksheet(worksheetName);
+                        worksheet.DeleteRangeContents(newRange, false);
+                    }
+                }
+            }
+        }
+        #endregion
     }
 }

@@ -68,16 +68,28 @@ namespace Exceleration.Commands
             worksheet.RenameRange(oldName, newName);
         }
 
-        public void DeleteRangeContentsCommand(Excel.Worksheet worksheet, string name, ReferenceEnum referenceType = ReferenceEnum.ByName)
+        public void DeleteWorksheetRangeContents(Excel.Worksheet worksheet, string range, ReferenceEnum referenceType = ReferenceEnum.ByName)
         {
             if (referenceType == ReferenceEnum.ByName)
             {
-                worksheet.DeleteRangeContents(name);
+                worksheet.DeleteRangeContents(range);
             }
             else if (referenceType == ReferenceEnum.ByIndex)
             {
-                worksheet.DeleteRangeContents(name, false);
+                worksheet.DeleteRangeContents(range, false);
             }         
+        }
+
+        public void DeleteWorkbookRangeContents(Excel.Workbook workbook, string range, ReferenceEnum referenceType = ReferenceEnum.ByName)
+        {
+            if (referenceType == ReferenceEnum.ByName)
+            {
+                workbook.DeleteRangeContents(range);
+            }
+            else if (referenceType == ReferenceEnum.ByIndex)
+            {
+                workbook.DeleteRangeContents(range, false);
+            }
         }
     }
 }

@@ -45,6 +45,7 @@
     <Compile Include="Enums\ReferenceEnum.cs" />
     <Compile Include="ExcelHelper.cs" />
     <Compile Include="Extensions\ExcelApplicationExtensions.cs" />
+    <Compile Include="Extensions\ExcelNameExtensions.cs" />
     <Compile Include="Extensions\ExcelRangeExtensions.cs" />
     <Compile Include="Extensions\ExcelWorkbookExtensions.cs" />
     <Compile Include="Extensions\ExcelWorksheetExtensions.cs" />

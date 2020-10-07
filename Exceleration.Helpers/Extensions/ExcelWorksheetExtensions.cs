@@ -154,7 +154,7 @@ namespace Exceleration.Helpers.Extensions
         }
 
         /// <summary>
-        /// Deletes the named range from the worksheet's named range collection
+        /// Deletes the worksheet's range contents 
         /// </summary>
         /// <param name="worksheet">Target worksheet</param>
         /// <param name="range">Range. Can either be name or range of cells. If not the name, declare next parameter as false</param>

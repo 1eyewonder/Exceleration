@@ -132,12 +132,12 @@ namespace Exceleration.Build
             {
                 var command = GetString(row, commandColumn).ToUpper();
 
-                if (command == CommandType.If)
+                if (command == CodeCommands.If)
                 {
                     startRepeat++;
                 }
 
-                if (command == CommandType.EndIf)
+                if (command == CodeCommands.EndIf)
                 {
                     endRepeat++;
                 }
@@ -168,12 +168,12 @@ namespace Exceleration.Build
             {
                 var command = GetString(row, commandColumn).ToUpper();
 
-                if (command == CommandType.If)
+                if (command == CodeCommands.If)
                 {
                     ifcount++;
                 }
 
-                if (command == CommandType.EndIf)
+                if (command == CodeCommands.EndIf)
                 {
                     endIfCount++;
                     endIfLocations.Add(row);
@@ -202,12 +202,12 @@ namespace Exceleration.Build
             {
                 var command = GetString(row, commandColumn).ToUpper();
 
-                if (command == CommandType.Repeat)
+                if (command == CodeCommands.Repeat)
                 {
                     repeatCount++;
                 }
 
-                if (command == CommandType.EndRepeat)
+                if (command == CodeCommands.EndRepeat)
                 {
                     endRepeatCount++;
                     endRepeatLocation.Add(row);
@@ -234,12 +234,12 @@ namespace Exceleration.Build
             {
                 var command = GetString(row, commandColumn).ToUpper();
 
-                if (command == CommandType.Repeat)
+                if (command == CodeCommands.Repeat)
                 {
                     startRepeat++;
                 }
 
-                if (command == CommandType.EndRepeat)
+                if (command == CodeCommands.EndRepeat)
                 {
                     endRepeat++;
                 }

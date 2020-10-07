@@ -139,7 +139,30 @@ namespace Exceleration
                 workSheet.Range[$"E{i}"].Value = c.Name;
                 workSheet.Range[$"F{i}"].Value = c.Value;
                 i++;
-            }         
+            }
+            #endregion
+
+            #region Code Commands
+            // Gets commands for each category of methods
+            var codeCommands = CommandHelper.GetCodeCommands();
+
+            // Provides a blank row before starting next set of commands
+            i += 1;
+
+            // Gets count of fields to assign range for naming workbook commands
+            var codeCommandCount = codeCommands.Count;
+            workbook.CreateNamedRange(nameof(CodeCommands), $"B{i}:B{i + codeCommandCount - 1}");
+
+            foreach (var c in codeCommands)
+            {
+                workSheet.Range[$"A{i}"].Value = c.CommandType;
+                workSheet.Range[$"B{i}"].Value = c.Command;
+                workSheet.Range[$"C{i}"].Value = c.Options;
+                workSheet.Range[$"D{i}"].Value = c.Reference;
+                workSheet.Range[$"E{i}"].Value = c.Name;
+                workSheet.Range[$"F{i}"].Value = c.Value;
+                i++;
+            }
             #endregion
 
             #region Styling
@@ -157,7 +180,7 @@ namespace Exceleration
             topRange.Font.Bold = true;
 
             // Alternates color command table rows for easier reading
-            for (int o = 3; o <= i; o++)
+            for (int o = 3; o < i; o++)
             {
                 Excel.Range colorRange;
                 if (o%2 != 0)
@@ -341,6 +364,30 @@ namespace Exceleration
             // Reference column
             range = worksheet.Range[$"{nextColumn}" + $"{thisRow}"];
             range.AddDropDownList(nameof(ReferenceOptions));
+        }
+
+        private void AddCodeCommandsButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            Excel.Workbook workbook = Globals.ThisAddIn.Application.ActiveWorkbook;
+            Excel.Worksheet worksheet = workbook.ActiveSheet;
+            Excel.Range range = Globals.ThisAddIn.Application.ActiveCell;
+
+            //Checks if commands page exists
+            if (!workbook.WorksheetExists("Commands"))
+            {
+                MessageBox.Show("Please run 'Add Commands' and then try again.");
+            }
+
+            // Get row and next column indices
+            var nextColumn = WorksheetHelper.GetColumnName(range.Column + 1);
+            var thisRow = range.Row;
+
+            // Command type column
+            range.Value = CommandType.Code;
+
+            // Command column
+            range = worksheet.Range[$"{nextColumn}" + $"{thisRow}"];
+            range.AddDropDownList(nameof(CodeCommands));
         }
     }
 }

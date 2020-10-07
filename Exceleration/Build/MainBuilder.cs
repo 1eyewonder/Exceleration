@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
+using Exceleration.Helpers.Extensions;
 
 namespace Exceleration.Build
 {   
@@ -22,7 +23,7 @@ namespace Exceleration.Build
             _rangeCommands = new RangeCommands();
         }
 
-        public List<string> Run(bool startMethod, string rangeName = "", string rangeParameter = "")
+        public List<string> Run(bool startMethod, string rangeName = "")
         {
             Excel.Range startCell = null;
             Excel.Workbook workbook = Globals.ThisAddIn.Application.ActiveWorkbook;
@@ -64,18 +65,33 @@ namespace Exceleration.Build
             {
                 var commandType = GetString(i, typeColumn).ToUpper();
                 var command = GetString(i, commandColumn).ToUpper();
-                var option = GetString(i, optionsColumn).ToUpper();
-                var reference = GetString(i, referenceColumn).ToUpper();
-                var name = GetString(i, nameColumn);
-                var value = GetString(i, valueColumn);
+                string option;
+                string reference;
+                string name;
+                string value;
                 ReferenceEnum referenceType = ReferenceEnum.ByName;
                 PositionalEnum positional = PositionalEnum.AtEnd;
 
+                //var command = GetString(i, commandColumn).ToUpper();
+                //var option = GetString(i, optionsColumn).ToUpper();
+                //var reference = GetString(i, referenceColumn).ToUpper();
+                //var name = GetString(i, nameColumn);
+                //var value = GetString(i, valueColumn);
+
+
                 // Ignores comment lines
-                if (commandType == CommandType.Comment)
+                if (command == CodeCommands.Comment)
                 {
                     i++;
                     continue;
+                }
+                else
+                {
+                    command = GetString(i, commandColumn).ToUpper();
+                    option = GetString(i, optionsColumn).ToUpper();
+                    reference = GetString(i, referenceColumn).ToUpper();
+                    name = GetString(i, nameColumn);
+                    value = GetString(i, valueColumn);
                 }
                
                 switch (commandType)
@@ -151,7 +167,19 @@ namespace Exceleration.Build
                             case RangeCommands.DeleteRangeContents:
 
                                 referenceType = OptionHelper.GetReferenceEnumFromString(reference);
-                                _rangeCommands.DeleteRangeContentsCommand(workbook.ActiveSheet, value, referenceType);
+                                switch (option)
+                                {
+                                    case RangeOptions.WorkbookScope:
+                                        _rangeCommands.DeleteWorkbookRangeContents(workbook, value, referenceType);
+                                        break;
+                                    case RangeOptions.WorksheetScope:
+                                        _rangeCommands.DeleteWorksheetRangeContents(workbook.ActiveSheet, value, referenceType);
+                                        break;
+                                    default:
+                                        _rangeCommands.DeleteWorkbookRangeContents(workbook, value, referenceType);
+                                        break;
+                                }
+
                                 break;
 
                             case RangeCommands.RemoveNamedRange:
@@ -193,7 +221,37 @@ namespace Exceleration.Build
                         }
 
                         break;
-                        #endregion
+                    #endregion
+
+                    case CommandType.Code:
+
+                        switch (command)
+                        {
+                            case CodeCommands.Sub:
+                                MainBuilder runblock = null;
+                                var subName = GetString(i, valueColumn);
+                                string worksheetName;
+
+                                // Allows for calling sub-routines on different worksheets
+                                if (subName.Contains("!"))
+                                {
+                                    var subSplit = subName.Split('!');
+
+                                    worksheetName = subSplit[0];
+                                    subName = subSplit[1];
+
+                                    runblock = new MainBuilder(workbook.GetWorksheet(worksheetName));
+                                }
+                                else
+                                {
+                                    runblock = new MainBuilder(_worksheet);
+                                }
+
+                                runblock.Run(false, subName);
+                                break;
+                        }
+
+                        break;
                 }
 
                 i++;
