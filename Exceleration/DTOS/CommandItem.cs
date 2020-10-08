@@ -14,8 +14,9 @@ namespace Exceleration.DTOS
         public string Reference { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
+        public string Output { get; set; }
 
-        public CommandItem(string commandType, string command, string options, string reference, string name, string value)
+        public CommandItem(string commandType, string command, string options, string reference, string name, string value, string output)
         {
             CommandType = commandType;
             Command = command;
@@ -23,6 +24,7 @@ namespace Exceleration.DTOS
             Reference = reference;
             Name = name;
             Value = value;
+            Output = output;
         }
     }
 }

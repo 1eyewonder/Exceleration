@@ -80,6 +80,12 @@ namespace Exceleration.Build
             return value;
         }
 
+        /// <summary>
+        /// Convert value in Excel cell to an integer value
+        /// </summary>
+        /// <param name="row">Row number</param>
+        /// <param name="column">Column number</param>
+        /// <returns></returns>
         protected int GetInt(int row, int column)
         {
             var range = _worksheet.Cells[row, column];
@@ -94,7 +100,7 @@ namespace Exceleration.Build
             {
                 if (!int.TryParse(range.Value.ToString(), out value))
                 {
-                    value = 0;
+                    throw new Exception($"Value entered ({range.Value}) on {_worksheet.Name}, line {row} is not an integer. Please enter a valid integer.");
                 }
             }
 
@@ -122,6 +128,11 @@ namespace Exceleration.Build
 
         #region Generic Command Validation
 
+        /// <summary>
+        /// Checks if commands have matching end if commands
+        /// </summary>
+        /// <param name="row">Starting row of if statement</param>
+        /// <param name="commandColumn">Column to loop through and find matching end if command</param>
         protected void ValidateIf(int row, int commandColumn)
         {
             var rowStart = row;
@@ -156,9 +167,14 @@ namespace Exceleration.Build
             }
         }
 
+        /// <summary>
+        /// Returns the row number where the matching end if is located
+        /// </summary>
+        /// <param name="row">Row number</param>
+        /// <param name="commandColumn">Column to loop through and find matching end if command</param>
+        /// <returns></returns>
         protected int GetEndIfRow(int row, int commandColumn)
         {
-            var rowStart = row;
             var ifcount = 0;
             var endIfCount = 0;
 

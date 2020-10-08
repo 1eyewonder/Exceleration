@@ -16,6 +16,11 @@ namespace Exceleration.Build
     {
         private WorkbookCommands _workbookCommands;
         private RangeCommands _rangeCommands;
+        private bool _inRepeat = false;
+        private int _repeatStart = 0;
+        private int _repeatEnd = 0;
+        private int _repeatCount = 0;
+        private int _repeatIndex = 0;
 
         public MainBuilder(Excel.Worksheet worksheet) : base(worksheet)
         {
@@ -23,6 +28,12 @@ namespace Exceleration.Build
             _rangeCommands = new RangeCommands();
         }
 
+        /// <summary>
+        /// Runs code
+        /// </summary>
+        /// <param name="startMethod">Flags method as first called method</param>
+        /// <param name="rangeName">Named range indicating code blocks starting position</param>
+        /// <returns></returns>
         public List<string> Run(bool startMethod, string rangeName = "")
         {
             Excel.Range startCell = null;
@@ -72,13 +83,6 @@ namespace Exceleration.Build
                 ReferenceEnum referenceType = ReferenceEnum.ByName;
                 PositionalEnum positional = PositionalEnum.AtEnd;
 
-                //var command = GetString(i, commandColumn).ToUpper();
-                //var option = GetString(i, optionsColumn).ToUpper();
-                //var reference = GetString(i, referenceColumn).ToUpper();
-                //var name = GetString(i, nameColumn);
-                //var value = GetString(i, valueColumn);
-
-
                 // Ignores comment lines
                 if (command == CodeCommands.Comment)
                 {
@@ -87,7 +91,6 @@ namespace Exceleration.Build
                 }
                 else
                 {
-                    command = GetString(i, commandColumn).ToUpper();
                     option = GetString(i, optionsColumn).ToUpper();
                     reference = GetString(i, referenceColumn).ToUpper();
                     name = GetString(i, nameColumn);
@@ -249,12 +252,60 @@ namespace Exceleration.Build
 
                                 runblock.Run(false, subName);
                                 break;
+
+                            case CodeCommands.If:
+                                ValidateIf(i, commandColumn);
+
+                                var booleanValue = GetBoolean(i, valueColumn);
+
+                                // Skips to end if command line if false
+                                if (!booleanValue)
+                                {
+                                    i = GetEndIfRow(i, commandColumn);
+                                }
+
+                                break;
+
+                            case CodeCommands.Stop:
+                                throw new Exception("Program stopped");
+
+                            case CodeCommands.Repeat:
+                                ValidateRepeat(i, commandColumn);
+                                _repeatStart = i;
+                                _repeatEnd = GetEndRepeatRow(i, commandColumn);
+                                _repeatCount = GetInt(i, valueColumn);
+                                _repeatIndex = 1;
+                                SetValue(i, valueColumn+1, _repeatIndex.ToString());
+                                _inRepeat = true;
+                                break;
                         }
 
                         break;
                 }
 
                 i++;
+
+                if (_inRepeat)
+                {
+                    if (i == _repeatEnd)
+                    {
+                        if (_repeatIndex == _repeatCount)
+                        {
+                            i = _repeatEnd + 1;
+                            _repeatStart = 0;
+                            _repeatEnd = 0;
+                            _repeatCount = 0;
+                            _repeatIndex = 0;
+                            _inRepeat = false;
+                        }
+                        else
+                        {
+                            i = _repeatStart + 1;
+                            _repeatIndex++;
+                            SetValue(_repeatStart, valueColumn+1, _repeatIndex.ToString());
+                        }
+                    }
+                }
             }
            
             return new List<string>();

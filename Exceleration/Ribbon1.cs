@@ -10,6 +10,8 @@ using Exceleration.Commands;
 using Exceleration.Build;
 using Exceleration.CoreHelpers;
 using Exceleration.Helpers.Extensions;
+using System.Collections.Generic;
+using Exceleration.DTOS;
 
 namespace Exceleration
 {
@@ -22,189 +24,135 @@ namespace Exceleration
 
         private void button1_Click(object sender, RibbonControlEventArgs e)
         {
-            AddCommands();
+            CreateCommandWorksheet();
         }
 
         /// <summary>
         /// Adds command worksheet to workbook. Used for general command explanations and option lists
         /// </summary>
-        private void AddCommands()
+        private void CreateCommandWorksheet()
         {
             // Attempts to find a currently existing Command worksheet
             Excel.Workbook workbook = Globals.ThisAddIn.Application.ActiveWorkbook;
-            var workSheet = workbook.GetWorksheets().FirstOrDefault(x => x.Name == "Commands");
+            var worksheet = workbook.GetWorksheets().FirstOrDefault(x => x.Name == "Commands");
 
             // Adds a worksheet named Commands if it does not already exist
-            workSheet = workbook.CreateNewWorksheet("Commands");
+            worksheet = workbook.CreateNewWorksheet("Commands");
 
             // Adds column headers to command table
-            workSheet.Range["A1"].Value = "Command Type";
-            workSheet.Range["B1"].Value = "Command";
-            workSheet.Range["C1"].Value = "Options";
-            workSheet.Range["D1"].Value = "Reference";
-            workSheet.Range["E1"].Value = "Name";
-            workSheet.Range["F1"].Value = "Value";
+            worksheet.Range["A1"].Value = "Command Type";
+            worksheet.Range["B1"].Value = "Command";
+            worksheet.Range["C1"].Value = "Options";
+            worksheet.Range["D1"].Value = "Reference";
+            worksheet.Range["E1"].Value = "Name";
+            worksheet.Range["F1"].Value = "Value";
+            worksheet.Range["G1"].Value = "Output";
 
-            #region SheetOptions
-            // Creates sheet options table
-            workSheet.Range["J1"].Value = nameof(WorkbookOptions);
-            var sheetOptions = OptionHelper.GetWorkbookOptions();
+            // Add option ranges
+            AddOptions(workbook, nameof(WorkbookOptions), "J", OptionHelper.GetWorkbookOptions());
+            AddOptions(workbook, nameof(ReferenceOptions), "K", OptionHelper.GetReferenceOptions());
+            AddOptions(workbook, nameof(RangeOptions), "L", OptionHelper.GetRangeOptions());
 
-            int j = 2;
-            foreach (var o in sheetOptions)
-            {
-                workSheet.Range[$"J{j}"].Value = o;
-                j++;
-            }
-
-            // Gets count of fields to assign range for naming
-            var sheetOptionsCount = sheetOptions.Count;
-            workbook.CreateNamedRange(nameof(WorkbookOptions), $"J2:J{1 + sheetOptionsCount}");
-            #endregion
-
-            #region ReferenceOptions
-            // Creates sheet options table
-            workSheet.Range["K1"].Value = nameof(ReferenceOptions);
-            var referenceOptions = OptionHelper.GetReferenceOptions();
-
-            int q = 2;
-            foreach (var o in referenceOptions)
-            {
-                workSheet.Range[$"K{q}"].Value = o;
-                q++;
-            }
-
-            // Gets count of fields to assign range for naming
-            var referenceOptionsCount = referenceOptions.Count;
-            workbook.CreateNamedRange(nameof(ReferenceOptions), $"K2:K{1 + referenceOptionsCount}");
-            #endregion
-
-            #region RangeOptions
-            // Creates range options table
-            workSheet.Range["L1"].Value = nameof(RangeOptions);
-            var rangeOptions = OptionHelper.GetRangeOptions();
-
-            int p = 2;
-            foreach (var o in rangeOptions)
-            {
-                workSheet.Range[$"L{p}"].Value = o;
-                p++;
-            }
-
-            // Gets count of fields to assign range for naming
-            var rangeOptionsCount = rangeOptions.Count;
-            workbook.CreateNamedRange(nameof(RangeOptions), $"L2:L{1 + rangeOptionsCount}");
-            #endregion
-
-            #region Workbook Commands
-            // Gets commands for each category of methods
-            var workbookCommands = CommandHelper.GetWorkbookCommands();
-
-            // Starts counter at 2 due to Excel row we are starting at
-            var i = 2;
-
-            foreach (var c in workbookCommands)
-            {
-                workSheet.Range[$"A{i}"].Value = c.CommandType;
-                workSheet.Range[$"B{i}"].Value = c.Command;
-                workSheet.Range[$"C{i}"].Value = c.Options;
-                workSheet.Range[$"D{i}"].Value = c.Reference;
-                workSheet.Range[$"E{i}"].Value = c.Name;
-                workSheet.Range[$"F{i}"].Value = c.Value;
-                i++;
-            }
-
-            // Gets count of fields to assign range for naming workbook commands
-            var workbookCommandCount = workbookCommands.Count;
-            workbook.CreateNamedRange(nameof(WorkbookCommands), $"B2:B{1 + workbookCommandCount}");
-            #endregion
-
-            #region Range Commands
-            // Gets commands for each category of methods
-            var rangeCommands= CommandHelper.GetRangeCommands();
-
-            // Provides a blank row before starting next set of commands
-            i += 1;
-
-            // Gets count of fields to assign range for naming workbook commands
-            var rangeCommandCount = rangeCommands.Count;
-            workbook.CreateNamedRange(nameof(RangeCommands), $"B{i}:B{i + rangeCommandCount - 1}");
-
-            foreach (var c in rangeCommands)
-            {
-                workSheet.Range[$"A{i}"].Value = c.CommandType;
-                workSheet.Range[$"B{i}"].Value = c.Command;
-                workSheet.Range[$"C{i}"].Value = c.Options;
-                workSheet.Range[$"D{i}"].Value = c.Reference;
-                workSheet.Range[$"E{i}"].Value = c.Name;
-                workSheet.Range[$"F{i}"].Value = c.Value;
-                i++;
-            }
-            #endregion
-
-            #region Code Commands
-            // Gets commands for each category of methods
-            var codeCommands = CommandHelper.GetCodeCommands();
-
-            // Provides a blank row before starting next set of commands
-            i += 1;
-
-            // Gets count of fields to assign range for naming workbook commands
-            var codeCommandCount = codeCommands.Count;
-            workbook.CreateNamedRange(nameof(CodeCommands), $"B{i}:B{i + codeCommandCount - 1}");
-
-            foreach (var c in codeCommands)
-            {
-                workSheet.Range[$"A{i}"].Value = c.CommandType;
-                workSheet.Range[$"B{i}"].Value = c.Command;
-                workSheet.Range[$"C{i}"].Value = c.Options;
-                workSheet.Range[$"D{i}"].Value = c.Reference;
-                workSheet.Range[$"E{i}"].Value = c.Name;
-                workSheet.Range[$"F{i}"].Value = c.Value;
-                i++;
-            }
-            #endregion
+            // Add command ranges
+            int counter = 2;
+            counter = AddCommands(workbook, nameof(WorkbookCommands), counter, CommandHelper.GetWorkbookCommands());
+            counter = AddCommands(workbook, nameof(RangeCommands), counter, CommandHelper.GetRangeCommands());
+            counter = AddCommands(workbook, nameof(CodeCommands), counter, CommandHelper.GetCodeCommands());
 
             #region Styling
             // Styles the command table
-            var stylingRange = (Excel.Range)workSheet.Range["A:F"];
+            var stylingRange = (Excel.Range)worksheet.Range["A:G"];
             stylingRange.ColumnWidth = 45;
             stylingRange.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             stylingRange.Cells.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
             stylingRange.Cells.WrapText = true;
 
             // Selects and styles the command headers
-            var topRange = workSheet.Range["A1:F1"];
+            var topRange = worksheet.Range["A1:G1"];
             topRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.CornflowerBlue);
             topRange.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
             topRange.Font.Bold = true;
 
             // Alternates color command table rows for easier reading
-            for (int o = 3; o < i; o++)
+            for (int o = 3; o < counter-1; o++)
             {
                 Excel.Range colorRange;
                 if (o%2 != 0)
                 {
-                    colorRange = workSheet.Range[$"A{o}:F{o}"];
+                    colorRange = worksheet.Range[$"A{o}:G{o}"];
                     colorRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.LightGray);
                     colorRange.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
                 }
             }
 
             // Adds all around border to command table
-            Excel.Range borderRange = workSheet.Range[$"A1:F{i-1}"];
+            Excel.Range borderRange = worksheet.Range[$"A1:G{counter-2}"];
             borderRange.Cells.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
 
             // Adds filter ability to command table for users
             borderRange.AutoFilter(1);
 
             // Styles the options tables
-            stylingRange = (Excel.Range)workSheet.Range["J:L"];
+            stylingRange = (Excel.Range)worksheet.Range["J:L"];
             stylingRange.ColumnWidth = 25;
             stylingRange.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;    
             #endregion
         }
 
+        /// <summary>
+        /// Generic method for adding options to the commands page
+        /// </summary>
+        /// <param name="worksheet">Target worksheet</param>
+        /// <param name="name">Name of range being created</param>
+        /// <param name="column">Excel column options are to be placed in, alphabetical named not R1C1 style</param>
+        /// <param name="options">Selectable options from OptionHelper class</param>
+        private void AddOptions(Excel.Workbook workbook, string name, string column, List<string> options)
+        {
+            Excel.Worksheet worksheet = workbook.ActiveSheet;
+
+            worksheet.Range[$"{column+1}"].Value = name;
+
+            int i = 2;
+            foreach(var o in options)
+            {
+                worksheet.Range[$"{column + i}"].Value = o;
+                i++;
+            }
+
+            int optionsCount = options.Count;
+            workbook.CreateNamedRange(name, $"{column + 2}:{column}{1 + optionsCount}");
+        }
+
+        /// <summary>
+        /// Generic method for adding commands to the command table
+        /// </summary>
+        /// <param name="workbook">Target workbook</param>
+        /// <param name="commandName">Name of command range</param>
+        /// <param name="startingInteger">Excel row index where command is to be added</param>
+        /// <param name="commands">List of command items</param>
+        /// <returns></returns>
+        private int AddCommands(Excel.Workbook workbook, string commandName, int startingInteger,  List<CommandItem> commands)
+        {
+            Excel.Worksheet worksheet = workbook.ActiveSheet;
+            int i = startingInteger;
+
+            foreach (var c in commands)
+            {
+                worksheet.Range[$"A{i}"].Value = c.CommandType;
+                worksheet.Range[$"B{i}"].Value = c.Command;
+                worksheet.Range[$"C{i}"].Value = c.Options;
+                worksheet.Range[$"D{i}"].Value = c.Reference;
+                worksheet.Range[$"E{i}"].Value = c.Name;
+                worksheet.Range[$"F{i}"].Value = c.Value;
+                worksheet.Range[$"G{i}"].Value = c.Output;
+                i++;
+            }
+
+            var commandCount = commands.Count;
+            workbook.CreateNamedRange(commandName, $"B{startingInteger}:B{startingInteger + commandCount - 1}");
+
+            return i + 1;
+        }
         private void AddTemplate()
         {
             Excel.Worksheet workSheet = null;
@@ -245,17 +193,18 @@ namespace Exceleration
             workSheet.Range["D5"].Value = "Reference";
             workSheet.Range["E5"].Value = "Name";
             workSheet.Range["F5"].Value = "Value";
-            
+            workSheet.Range["G5"].Value = "Output";
+
             XlApp.ActiveWorkbook.CreateNamedRange(workSheet.Name + "Type", "A5");
 
             // Selects and styles the column headers
-            var topRange = workSheet.Range["A5:F5"];
+            var topRange = workSheet.Range["A5:G5"];
             topRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.CornflowerBlue);
             topRange.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
             topRange.Font.Bold = true;
 
             // Styles the command columns
-            var stylingRange = (Excel.Range)workSheet.Range["A:F"];
+            var stylingRange = (Excel.Range)workSheet.Range["A:G"];
             stylingRange.ColumnWidth = 25;
             stylingRange.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
         }
