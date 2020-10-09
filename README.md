@@ -9,6 +9,8 @@ Big thanks to <b>jraleighdev</b> and his project where I got a good foundation f
 
 If you think this project can benefit you, please feel free to reach out and I will do my best to add features that can help you!
 
+Demonstration on youtube: https://www.youtube.com/watch?v=CVjyzr-IxN8
+
 <b>Startup:</b>
 
 To start off, go to the Add-In tab on Excel. Here you will see the current options available.
