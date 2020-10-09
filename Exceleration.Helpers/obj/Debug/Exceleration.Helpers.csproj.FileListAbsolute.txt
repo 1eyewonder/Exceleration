@@ -4,4 +4,3 @@ C:\GitHub\Exceleration\Exceleration.Helpers\obj\Debug\Exceleration.Helpers.cspro
 C:\GitHub\Exceleration\Exceleration.Helpers\obj\Debug\Exceleration.Helpers.csproj.CoreCompileInputs.cache
 C:\GitHub\Exceleration\Exceleration.Helpers\obj\Debug\Exceleration.Helpers.dll
 C:\GitHub\Exceleration\Exceleration.Helpers\obj\Debug\Exceleration.Helpers.pdb
-C:\GitHub\Exceleration\Exceleration.Helpers\obj\Debug\Exceleration.Helpers.csprojAssemblyReference.cache

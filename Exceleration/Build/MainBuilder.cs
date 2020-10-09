@@ -115,7 +115,7 @@ namespace Exceleration.Build
 
                             case WorkbookCommands.DeleteSheet:
                                 referenceType = OptionHelper.GetReferenceEnumFromString(reference);
-                                _workbookCommands.DeleteSheetCommand(workbook, value);
+                                _workbookCommands.DeleteSheetCommand(workbook, value, referenceType);
                                 break;
 
                             case WorkbookCommands.MoveSheet:
