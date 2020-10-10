@@ -54,5 +54,14 @@ namespace Exceleration.CoreHelpers
                 new CommandItem(CommandType.Code, CodeCommands.Stop,"Not needed for this command.","Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command"),
             };
         }
+
+        public static List<CommandItem> GetWorksheetCommands()
+        {
+            return new List<CommandItem>
+            {
+                new CommandItem(CommandType.Worksheet, WorksheetCommands.AddColumn,"Not needed for this command","Not needed for this command","Not needed for this command","Cell to have column added to. Targeted cell column will shift to the right.","Not needed for this command"),
+                new CommandItem(CommandType.Worksheet, WorksheetCommands.AddRow,"Not needed for this command","Not needed for this command","Not needed for this command","Cell to have row added to. Targeted cell row will shift down.","Not needed for this command"),
+            };
+        }
     }
 }

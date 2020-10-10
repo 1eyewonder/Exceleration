@@ -143,6 +143,16 @@ namespace Exceleration.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap outline_grid_on_black_18dp {
+            get {
+                object obj = ResourceManager.GetObject("outline_grid_on_black_18dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap outline_table_view_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("outline_table_view_black_18dp", resourceCulture);

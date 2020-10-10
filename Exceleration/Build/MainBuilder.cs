@@ -15,6 +15,7 @@ namespace Exceleration.Build
     public class MainBuilder : ExcelParse
     {
         private WorkbookCommands _workbookCommands;
+        private WorksheetCommands _worksheetCommands;
         private RangeCommands _rangeCommands;
         private bool _inRepeat = false;
         private int _repeatStart = 0;
@@ -26,6 +27,7 @@ namespace Exceleration.Build
         {
             _workbookCommands = new WorkbookCommands();
             _rangeCommands = new RangeCommands();
+            _worksheetCommands = new WorksheetCommands();
         }
 
         /// <summary>
@@ -143,6 +145,15 @@ namespace Exceleration.Build
 
                     #region Worksheet
                     case CommandType.Worksheet:
+                        switch(command)
+                        {
+                            case WorksheetCommands.AddColumn:
+                                _worksheetCommands.AddColumnCommand(workbook.ActiveSheet, value);
+                                break;
+                            case WorksheetCommands.AddRow:
+                                _worksheetCommands.AddRowCommand(workbook.ActiveSheet, value);
+                                break;
+                        }
 
                         break;
 

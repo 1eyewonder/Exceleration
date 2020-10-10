@@ -21,6 +21,64 @@ namespace Exceleration.Helpers.Extensions
         }
 
         /// <summary>
+        /// Adds column to the worksheet
+        /// </summary>
+        /// <param name="worksheet">Target worksheet</param>
+        /// <param name="range">Range of a single cell on the sheet</param>
+        public static void AddColumn(this Excel.Worksheet worksheet, string range)
+        {
+            if (string.IsNullOrEmpty(range))
+            {
+                throw new Exception($"Please enter a value for the range that is not null or empty");
+            }
+
+            if (worksheet.IsRange(range))
+            {
+                if (worksheet.Range[range].IsSingularCell())
+                {
+                    worksheet.Range[range].EntireColumn.Insert(Excel.XlInsertShiftDirection.xlShiftToRight, Excel.XlInsertFormatOrigin.xlFormatFromLeftOrAbove);
+                }
+                else
+                {
+                    throw new Exception("Please ensure only one cell is reference to indicate the column");
+                }
+            }
+            else
+            {
+                throw new Exception($"The range {range} is not a valid range on worksheet {worksheet.Name}");
+            }
+        }
+
+        /// <summary>
+        /// Adds a row to the worksheet
+        /// </summary>
+        /// <param name="worksheet"></param>
+        /// <param name="range">Range of a single cell on the sheet</param>
+        public static void AddRow(this Excel.Worksheet worksheet, string range)
+        {
+            if (string.IsNullOrEmpty(range))
+            {
+                throw new Exception($"Please enter a value for the range that is not null or empty");
+            }
+            if (worksheet.IsRange(range))
+            {
+                if (worksheet.Range[range].IsSingularCell())
+                {
+                    worksheet.Range[range].EntireRow.Insert(Excel.XlInsertShiftDirection.xlShiftDown, Excel.XlInsertFormatOrigin.xlFormatFromLeftOrAbove);
+                }
+                else
+                {
+                    throw new Exception("Please ensure only one cell is reference to indicate the row");
+                }
+            }
+            else
+            {
+                throw new Exception($"The range {range} is not a valid range on worksheet {worksheet.Name}");
+            }
+        }
+
+        #region Ranges
+        /// <summary>
         /// Checks if range exists in the given worksheet scope
         /// </summary>
         /// <param name="workSheet">Target worksheet</param>
@@ -194,5 +252,6 @@ namespace Exceleration.Helpers.Extensions
         {
             worksheet.GetNamedRange(name).Delete();
         }
+        #endregion
     }
 }

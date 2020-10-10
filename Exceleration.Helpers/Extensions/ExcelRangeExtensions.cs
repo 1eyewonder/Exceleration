@@ -49,5 +49,14 @@ namespace Exceleration.Helpers.Extensions
             }
             return tempList;
         }        
+
+        public static bool IsSingularCell(this Excel.Range range)
+        {
+            if (range.Cells.Count == 1)
+            {
+                return true;
+            }
+            else return false;
+        }
     }
 }

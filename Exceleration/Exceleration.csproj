@@ -162,6 +162,7 @@
     <Compile Include="Commands\CommandType.cs" />
     <Compile Include="Commands\RangeCommands.cs" />
     <Compile Include="Commands\WorkbookCommands.cs" />
+    <Compile Include="Commands\WorksheetCommands.cs" />
     <Compile Include="DTOS\CommandItem.cs" />
     <Compile Include="Forms\InputForm.cs">
       <SubType>Form</SubType>
@@ -230,6 +231,7 @@
     <None Include="Icons\outline_forward_black_18dp.png" />
     <None Include="Icons\outline_view_week_black_18dp.png" />
     <None Include="Icons\outline_table_view_black_18dp.png" />
+    <None Include="Icons\outline_grid_on_black_18dp.png" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
   <ItemGroup>
