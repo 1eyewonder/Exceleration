@@ -50,6 +50,11 @@ namespace Exceleration.Helpers.Extensions
             return tempList;
         }        
 
+        /// <summary>
+        /// Returns true if range consists of one cell
+        /// </summary>
+        /// <param name="range"></param>
+        /// <returns></returns>
         public static bool IsSingularCell(this Excel.Range range)
         {
             if (range.Cells.Count == 1)

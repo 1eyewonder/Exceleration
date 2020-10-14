@@ -153,6 +153,18 @@ namespace Exceleration.Build
                             case WorksheetCommands.AddRow:
                                 _worksheetCommands.AddRowCommand(workbook.ActiveSheet, value);
                                 break;
+                            case WorksheetCommands.MoveColumn:
+                                _worksheetCommands.MoveColumnCommand(workbook.ActiveSheet, value, name);
+                                break;
+                            case WorksheetCommands.MoveRow:
+                                _worksheetCommands.MoveRowCommand(workbook.ActiveSheet, value, name);
+                                break;
+                            case WorksheetCommands.DeleteColumn:
+                                _worksheetCommands.DeleteColumnCommand(workbook.ActiveSheet, value);
+                                break;
+                            case WorksheetCommands.DeleteRow:
+                                _worksheetCommands.DeleteRowCommand(workbook.ActiveSheet, value);
+                                break;
                         }
 
                         break;

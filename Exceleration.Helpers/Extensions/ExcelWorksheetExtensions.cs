@@ -50,6 +50,133 @@ namespace Exceleration.Helpers.Extensions
         }
 
         /// <summary>
+        /// Deletes a column from the worksheet
+        /// </summary>
+        /// <param name="worksheet">Target worksheet</param>
+        /// <param name="range">Singular cell range within the target column</param>
+        public static void DeleteColumn(this Excel.Worksheet worksheet, string range)
+        {
+            if (string.IsNullOrEmpty(range))
+            {
+                throw new Exception($"Please enter a value for the range that is not null or empty");
+            }
+
+            if (worksheet.IsRange(range))
+            {
+                if (worksheet.Range[range].IsSingularCell())
+                {
+                    worksheet.Range[range].EntireColumn.Delete(Excel.XlDeleteShiftDirection.xlShiftToLeft);
+                }
+                else
+                {
+                    throw new Exception("Please ensure only one cell is reference to indicate the column");
+                }
+            }
+            else
+            {
+                throw new Exception($"The range {range} is not a valid range on worksheet {worksheet.Name}");
+            }
+        }
+
+        /// <summary>
+        /// Moves a column within the current worksheet
+        /// </summary>
+        /// <param name="worksheet">Target worksheet</param>
+        /// <param name="oldRange">Singular cell range within the target column</param>
+        /// <param name="newRange">Singular cell range within the column the target is to be moved left of</param>
+        public static void MoveColumn(this Excel.Worksheet worksheet, string oldRange, string newRange)
+        {
+            if (string.IsNullOrEmpty(oldRange) || string.IsNullOrEmpty(newRange))
+            {
+                throw new Exception($"The old or newly specified range is empty. Please specify which column is moving and where you would like to move it to.");
+            }
+
+            Excel.Range copyRange;
+            Excel.Range insertRange;
+
+            if (worksheet.IsRange(oldRange))
+            {
+                if (worksheet.Range[oldRange].IsSingularCell())
+                {
+                    if (worksheet.IsRange(newRange))
+                    {
+                        if (worksheet.Range[newRange].IsSingularCell())
+                        {
+                            copyRange = worksheet.Range[oldRange].EntireColumn;
+                            insertRange = worksheet.Range[newRange].EntireColumn;
+                            insertRange.Insert(Excel.XlInsertShiftDirection.xlShiftToRight, copyRange.Cut());
+                        }
+                        else
+                        {
+                            throw new Exception($"The column target location, {newRange}, does not specify one cell. Please verify one cell is selected in the desired column location.");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception($"The column target location, {newRange}, is not a valid range. Please specify the range exists on the current worksheet and uses the correct formatting.");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"The targeted column range, {oldRange}, does not specify one cell. Please verify one cell is selected in the targeted column location.");
+                }
+            }
+            else
+            {
+                throw new Exception($"The targeted column range, {oldRange}, is not a valid range. Please specify the range exists on the current worksheet and uses the correct formatting.");
+            }
+        }
+
+        /// <summary>
+        /// Moves a row within the current worksheet
+        /// </summary>
+        /// <param name="worksheet">Target worksheet</param>
+        /// <param name="oldRange">Singular cell range within the target row</param>
+        /// <param name="newRange">Singular cell range within the row the target is to be moved above</param>
+        public static void MoveRow(this Excel.Worksheet worksheet, string oldRange, string newRange)
+        {
+            if (string.IsNullOrEmpty(oldRange) || string.IsNullOrEmpty(newRange))
+            {
+                throw new Exception($"The old or newly specified range is empty. Please specify which row is moving and where you would like to move it to.");
+            }
+
+            Excel.Range copyRange;
+            Excel.Range insertRange;
+
+            if (worksheet.IsRange(oldRange))
+            {
+                if (worksheet.Range[oldRange].IsSingularCell())
+                {
+                    if (worksheet.IsRange(newRange))
+                    {
+                        if (worksheet.Range[newRange].IsSingularCell())
+                        {
+                            copyRange = worksheet.Range[oldRange].EntireRow;
+                            insertRange = worksheet.Range[newRange].EntireRow;
+                            insertRange.Insert(Excel.XlInsertShiftDirection.xlShiftDown, copyRange.Cut());
+                        }
+                        else
+                        {
+                            throw new Exception($"The row target location, {newRange}, does not specify one cell. Please verify one cell is selected in the desired row location.");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception($"The row target location, {newRange}, is not a valid range. Please specify the range exists on the current worksheet and uses the correct formatting.");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"The targeted row range, {oldRange}, does not specify one cell. Please verify one cell is selected in the targeted row location.");
+                }
+            }
+            else
+            {
+                throw new Exception($"The targeted row range, {oldRange}, is not a valid range. Please specify the range exists on the current worksheet and uses the correct formatting.");
+            }
+        }
+
+        /// <summary>
         /// Adds a row to the worksheet
         /// </summary>
         /// <param name="worksheet"></param>
@@ -65,6 +192,35 @@ namespace Exceleration.Helpers.Extensions
                 if (worksheet.Range[range].IsSingularCell())
                 {
                     worksheet.Range[range].EntireRow.Insert(Excel.XlInsertShiftDirection.xlShiftDown, Excel.XlInsertFormatOrigin.xlFormatFromLeftOrAbove);
+                }
+                else
+                {
+                    throw new Exception("Please ensure only one cell is reference to indicate the row");
+                }
+            }
+            else
+            {
+                throw new Exception($"The range {range} is not a valid range on worksheet {worksheet.Name}");
+            }
+        }
+
+        /// <summary>
+        /// Deletes a row from the worksheet
+        /// </summary>
+        /// <param name="worksheet">Target worksheet</param>
+        /// <param name="range">Singular cell range within the target row</param>
+        public static void DeleteRow(this Excel.Worksheet worksheet, string range)
+        {
+            if (string.IsNullOrEmpty(range))
+            {
+                throw new Exception($"Please enter a value for the range that is not null or empty");
+            }
+
+            if (worksheet.IsRange(range))
+            {
+                if (worksheet.Range[range].IsSingularCell())
+                {
+                    worksheet.Range[range].EntireRow.Delete(Excel.XlDeleteShiftDirection.xlShiftUp);
                 }
                 else
                 {
