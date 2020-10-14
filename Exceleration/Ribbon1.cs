@@ -56,6 +56,7 @@ namespace Exceleration
             // Add command ranges
             int counter = 2;
             counter = AddCommands(workbook, nameof(WorkbookCommands), counter, CommandHelper.GetWorkbookCommands());
+            counter = AddCommands(workbook, nameof(WorksheetCommands), counter, CommandHelper.GetWorksheetCommands());
             counter = AddCommands(workbook, nameof(RangeCommands), counter, CommandHelper.GetRangeCommands());
             counter = AddCommands(workbook, nameof(CodeCommands), counter, CommandHelper.GetCodeCommands());
 
@@ -210,41 +211,8 @@ namespace Exceleration
         }
 
         private void AddWorkbookCommands(object sender, RibbonControlEventArgs e)
-        {                    
-            Excel.Workbook workbook = Globals.ThisAddIn.Application.ActiveWorkbook;
-            Excel.Worksheet worksheet = workbook.ActiveSheet;
-            Excel.Range range = Globals.ThisAddIn.Application.ActiveCell;
-
-            //Checks if commands page exists
-            if (!workbook.WorksheetExists("Commands"))
-            {
-                MessageBox.Show("Please run 'Add Commands' and then try again.");
-            }
-
-            // Get row and next column indices
-            var nextColumn = WorksheetHelper.GetColumnName(range.Column+1);
-            var thisRow = range.Row;
-
-            // Command type column
-            range.Value = CommandType.Workbook;
-
-            // Command column
-            range = worksheet.Range[$"{nextColumn}" + $"{thisRow}"];
-            range.AddDropDownList(nameof(WorkbookCommands));
-
-            // Gets next column index
-            nextColumn = WorksheetHelper.GetColumnName(range.Column + 1);
-
-            // Options column
-            range = worksheet.Range[$"{nextColumn}" + $"{thisRow}"];
-            range.AddDropDownList(nameof(WorkbookOptions));
-
-            // Gets next column index
-            nextColumn = WorksheetHelper.GetColumnName(range.Column + 1);
-
-            // Reference column
-            range = worksheet.Range[$"{nextColumn}" + $"{thisRow}"];
-            range.AddDropDownList(nameof(ReferenceOptions));
+        {
+            AddRowValidation(CommandType.Workbook, nameof(WorkbookCommands), nameof(WorkbookOptions), nameof(ReferenceOptions));
         }
 
         private void AddTemplateButton_Click(object sender, RibbonControlEventArgs e)
@@ -279,43 +247,27 @@ namespace Exceleration
 
         private void AddRangeCommands(object sender, RibbonControlEventArgs e)
         {
-            Excel.Workbook workbook = Globals.ThisAddIn.Application.ActiveWorkbook;
-            Excel.Worksheet worksheet = workbook.ActiveSheet;
-            Excel.Range range = Globals.ThisAddIn.Application.ActiveCell;
-
-            //Checks if commands page exists
-            if (!workbook.WorksheetExists("Commands"))
-            {
-                MessageBox.Show("Please run 'Add Commands' and then try again.");
-            }
-
-            // Get row and next column indices
-            var nextColumn = WorksheetHelper.GetColumnName(range.Column + 1);
-            var thisRow = range.Row;
-
-            // Command type column
-            range.Value = CommandType.Range;
-
-            // Command column
-            range = worksheet.Range[$"{nextColumn}" + $"{thisRow}"];
-            range.AddDropDownList(nameof(RangeCommands));
-
-            // Gets next column index
-            nextColumn = WorksheetHelper.GetColumnName(range.Column + 1);
-
-            // Options column
-            range = worksheet.Range[$"{nextColumn}" + $"{thisRow}"];
-            range.AddDropDownList(nameof(RangeOptions));
-
-            // Gets next column index
-            nextColumn = WorksheetHelper.GetColumnName(range.Column + 1);
-
-            // Reference column
-            range = worksheet.Range[$"{nextColumn}" + $"{thisRow}"];
-            range.AddDropDownList(nameof(ReferenceOptions));
+            AddRowValidation(CommandType.Range, nameof(RangeCommands), nameof(RangeOptions), nameof(ReferenceOptions));           
         }
 
         private void AddCodeCommandsButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            AddRowValidation(CommandType.Code, nameof(CodeCommands));
+        }
+
+        private void AddWorksheetCommandsButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            AddRowValidation(CommandType.Worksheet, nameof(WorksheetCommands));
+        }
+
+        /// <summary>
+        /// Method for passing in validation to command rows
+        /// </summary>
+        /// <param name="commandType">Command type value</param>
+        /// <param name="command">Command named range</param>
+        /// <param name="options">Options named range</param>
+        /// <param name="reference">Reference named range</param>
+        private void AddRowValidation(string commandType, string command, string options = null, string reference = null)
         {
             Excel.Workbook workbook = Globals.ThisAddIn.Application.ActiveWorkbook;
             Excel.Worksheet worksheet = workbook.ActiveSheet;
@@ -328,15 +280,48 @@ namespace Exceleration
             }
 
             // Get row and next column indices
-            var nextColumn = WorksheetHelper.GetColumnName(range.Column + 1);
+            var thisColumn = WorksheetHelper.GetColumnName(range.Column);
             var thisRow = range.Row;
+            Excel.Range startRange = worksheet.Range[$"{thisColumn}" + $"{thisRow}"];
+
+            //Clears any previous validation on the row
+            string tempColumn;
+            for (int i = 0; i < 6; i++)
+            {
+                tempColumn = WorksheetHelper.GetColumnName(range.Column + i);
+                worksheet.Range[$"{tempColumn}" + $"{thisRow}"].Validation.Delete();
+            }
 
             // Command type column
-            range.Value = CommandType.Code;
+            range.Value = commandType;
+
+            // Gets next column index
+            thisColumn = WorksheetHelper.GetColumnName(range.Column + 1);
 
             // Command column
-            range = worksheet.Range[$"{nextColumn}" + $"{thisRow}"];
-            range.AddDropDownList(nameof(CodeCommands));
+            range = worksheet.Range[$"{thisColumn}" + $"{thisRow}"];
+            range.AddDropDownList(command);
+
+            // Gets next column index
+            thisColumn = WorksheetHelper.GetColumnName(range.Column + 1);
+
+            // Options column
+            if (!string.IsNullOrEmpty(options))
+            {
+                range = worksheet.Range[$"{thisColumn}" + $"{thisRow}"];
+                range.AddDropDownList(options);
+
+                // Gets next column index
+                thisColumn = WorksheetHelper.GetColumnName(range.Column + 1);
+
+
+                if(!string.IsNullOrEmpty(reference))
+                {
+                    // Reference column
+                    range = worksheet.Range[$"{thisColumn}" + $"{thisRow}"];
+                    range.AddDropDownList(nameof(ReferenceOptions));
+                }                
+            }            
         }
     }
 }

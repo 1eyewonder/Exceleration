@@ -610,7 +610,7 @@ namespace Exceleration.Helpers.Extensions
             {
                 if (workbook.NamedRangeExists(range))
                 {
-                    workbook.GetNamedRange(range).RefersToRange.Cells.Delete();
+                    workbook.GetNamedRange(range).RefersToRange.Cells.ClearContents();
                 }
             }
             else

@@ -54,5 +54,18 @@ namespace Exceleration.CoreHelpers
                 new CommandItem(CommandType.Code, CodeCommands.Stop,"Not needed for this command.","Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command"),
             };
         }
+
+        public static List<CommandItem> GetWorksheetCommands()
+        {
+            return new List<CommandItem>
+            {
+                new CommandItem(CommandType.Worksheet, WorksheetCommands.AddColumn,"Not needed for this command","Not needed for this command","Not needed for this command","Cell to have column added to. Targeted cell column will shift to the right.","Not needed for this command"),
+                new CommandItem(CommandType.Worksheet, WorksheetCommands.AddRow,"Not needed for this command","Not needed for this command","Not needed for this command","Cell to have row added to. Targeted cell row will shift down.","Not needed for this command"),
+                new CommandItem(CommandType.Worksheet, WorksheetCommands.MoveColumn,"Not needed for this command","Not needed for this command","Cell to have column moved left of. For example, entering cell 'F1' will insert the new column in column E.", "Cell to be moved. Enter a single cell in the desired column", "Not needed for this command"),
+                new CommandItem(CommandType.Worksheet, WorksheetCommands.MoveRow,"Not needed for this command","Not needed for this command","Cell to have row moved above. For example, entering cell 'F3' will insert the new row in row 2.", "Cell to be moved. Enter a single cell in the desired row", "Not needed for this command"),
+                new CommandItem(CommandType.Worksheet, WorksheetCommands.DeleteColumn,"Not needed for this command","Not needed for this command","Not needed for this command","Cell to have column deleted. Columns to the right of the column being deleted will shift left.","Not needed for this command"),
+                new CommandItem(CommandType.Worksheet, WorksheetCommands.DeleteRow,"Not needed for this command","Not needed for this command","Not needed for this command","Cell to have row deleted. Rows to below the row being deleted will shift up.","Not needed for this command"),
+            };
+        }
     }
 }

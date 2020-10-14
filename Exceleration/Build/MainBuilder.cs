@@ -15,6 +15,7 @@ namespace Exceleration.Build
     public class MainBuilder : ExcelParse
     {
         private WorkbookCommands _workbookCommands;
+        private WorksheetCommands _worksheetCommands;
         private RangeCommands _rangeCommands;
         private bool _inRepeat = false;
         private int _repeatStart = 0;
@@ -26,6 +27,7 @@ namespace Exceleration.Build
         {
             _workbookCommands = new WorkbookCommands();
             _rangeCommands = new RangeCommands();
+            _worksheetCommands = new WorksheetCommands();
         }
 
         /// <summary>
@@ -115,7 +117,7 @@ namespace Exceleration.Build
 
                             case WorkbookCommands.DeleteSheet:
                                 referenceType = OptionHelper.GetReferenceEnumFromString(reference);
-                                _workbookCommands.DeleteSheetCommand(workbook, value);
+                                _workbookCommands.DeleteSheetCommand(workbook, value, referenceType);
                                 break;
 
                             case WorkbookCommands.MoveSheet:
@@ -143,6 +145,27 @@ namespace Exceleration.Build
 
                     #region Worksheet
                     case CommandType.Worksheet:
+                        switch(command)
+                        {
+                            case WorksheetCommands.AddColumn:
+                                _worksheetCommands.AddColumnCommand(workbook.ActiveSheet, value);
+                                break;
+                            case WorksheetCommands.AddRow:
+                                _worksheetCommands.AddRowCommand(workbook.ActiveSheet, value);
+                                break;
+                            case WorksheetCommands.MoveColumn:
+                                _worksheetCommands.MoveColumnCommand(workbook.ActiveSheet, value, name);
+                                break;
+                            case WorksheetCommands.MoveRow:
+                                _worksheetCommands.MoveRowCommand(workbook.ActiveSheet, value, name);
+                                break;
+                            case WorksheetCommands.DeleteColumn:
+                                _worksheetCommands.DeleteColumnCommand(workbook.ActiveSheet, value);
+                                break;
+                            case WorksheetCommands.DeleteRow:
+                                _worksheetCommands.DeleteRowCommand(workbook.ActiveSheet, value);
+                                break;
+                        }
 
                         break;
 
