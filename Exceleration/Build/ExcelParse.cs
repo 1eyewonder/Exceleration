@@ -47,6 +47,26 @@ namespace Exceleration.Build
             return value;
         }
 
+        /// <summary>
+        /// Converts value in Excel cell to a list of string base on comma delimination
+        /// </summary>
+        /// <param name="row">Row number</param>
+        /// <param name="column">Column number</param>
+        /// <returns></returns>
+        protected string[] GetArrayString(int row, int column)
+        {
+            var range = _worksheet.Cells[row, column];
+            string[] theList = null;
+
+            if (range.Value != null)
+            {
+                string someValue = range.Value.ToString();
+                theList = someValue.Split(',');
+            }
+
+            return theList;
+        }
+
         protected bool GetBoolean(int row, int column)
         {
             var value = GetString(row, column);
@@ -81,7 +101,7 @@ namespace Exceleration.Build
         }
 
         /// <summary>
-        /// Convert value in Excel cell to an integer value
+        /// Convert value in Excel cell to an integer value. Returns 0 if empty
         /// </summary>
         /// <param name="row">Row number</param>
         /// <param name="column">Column number</param>

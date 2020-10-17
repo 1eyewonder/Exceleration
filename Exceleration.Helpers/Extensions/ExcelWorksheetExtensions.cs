@@ -409,5 +409,19 @@ namespace Exceleration.Helpers.Extensions
             worksheet.GetNamedRange(name).Delete();
         }
         #endregion
+
+        #region Filters
+        /// <summary>
+        /// Removes any filtering applied to the current worksheet
+        /// </summary>
+        /// <param name="worksheet">Target worksheet</param>
+        public static void ClearAutoFilters(this Excel.Worksheet worksheet)
+        {
+            if (worksheet.AutoFilter != null && worksheet.AutoFilterMode == true)
+            {
+                worksheet.AutoFilter.ShowAllData();
+            }
+        }
+        #endregion
     }
 }

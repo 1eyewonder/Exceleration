@@ -160,6 +160,7 @@
     <Compile Include="Build\MainBuilder.cs" />
     <Compile Include="Commands\CodeCommands.cs" />
     <Compile Include="Commands\CommandType.cs" />
+    <Compile Include="Commands\FilterCommands.cs" />
     <Compile Include="Commands\RangeCommands.cs" />
     <Compile Include="Commands\WorkbookCommands.cs" />
     <Compile Include="Commands\WorksheetCommands.cs" />
@@ -172,6 +173,7 @@
     </Compile>
     <Compile Include="CoreHelpers\CommandHelper.cs" />
     <Compile Include="CoreHelpers\OptionHelper.cs" />
+    <Compile Include="Options\ExcelAutoFilterOptions.cs" />
     <Compile Include="Options\RangeOptions.cs" />
     <Compile Include="Options\ReferenceOptions.cs" />
     <Compile Include="Options\WorkbookOptions.cs" />

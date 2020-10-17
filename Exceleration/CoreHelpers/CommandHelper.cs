@@ -67,5 +67,17 @@ namespace Exceleration.CoreHelpers
                 new CommandItem(CommandType.Worksheet, WorksheetCommands.DeleteRow,"Not needed for this command","Not needed for this command","Not needed for this command","Cell to have row deleted. Rows to below the row being deleted will shift up.","Not needed for this command"),
             };
         }
+
+        public static List<CommandItem> GetFilterCommands()
+        {
+            return new List<CommandItem>
+            {
+                 new CommandItem(CommandType.Filter, FilterCommands.AddDataFilter,"Specifies type of filter added, if any","Column index, starting from the left and at 1, you wish to apply the filter to",
+                 "Search criteria for the current filter. If you have multiple values to filter for, use comma delimited text with no spaces to break up values i.e. 'Car,Truck,Van'. If you are looking for numerics or dates, you can use the '<,<=,>,>=' operators to find values related" +
+                 " to the desired value","Cell range to apply filtering to. Include the header row in the range.","Second set of criteria, if any, to apply for filter. If 'AND' or 'OR' options are selected, this is where you will apply your comparative criteria."),
+                 new CommandItem(CommandType.Filter, FilterCommands.ClearDataFilters,"Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command"),
+                 new CommandItem(CommandType.Filter, FilterCommands.DeleteDataFilters,"Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command"),
+            };
+        }
     }
 }

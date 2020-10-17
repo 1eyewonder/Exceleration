@@ -63,5 +63,67 @@ namespace Exceleration.Helpers.Extensions
             }
             else return false;
         }
+
+        /// <summary>
+        /// Adds a data filter to a range
+        /// </summary>
+        /// <param name="range">Target range, including the header row</param>
+        /// <param name="columnNumber">Column to apply filter to, index starts at 1 and relates to the first column on the left</param>
+        /// <param name="filterEnum">Excel enum how data will be filtered</param>
+        /// <param name="criteria">First criteria for filtering</param>
+        /// <param name="criteria2">Second criteria for filtering</param>
+        public static void AddAutoFilter(this Excel.Range range, int columnNumber = 1, Excel.XlAutoFilterOperator filterEnum = XlAutoFilterOperator.xlAnd, string[] criteria = null, string criteria2 = null)
+        {
+            int columnCount = range.Columns.Count;
+
+            if (columnNumber < 1 || columnNumber > columnCount)
+            {
+                throw new Exception($"The range selected, {range}, only has {columnCount} columns. Please enter a value greater than or equal to 1 and less than or equal to {columnCount}");
+            }
+
+            string singularCriteria = "";
+            if (criteria.Length == 1)
+            {
+                singularCriteria = criteria.First();
+            }
+
+            // Adds data filter to range without filtering data
+            if (columnNumber == 1 && filterEnum == XlAutoFilterOperator.xlAnd && criteria == null && criteria2 == null)
+            {
+                range.AutoFilter(1);
+            }
+
+            // If filter can be applied to a column without criteria
+            else if (criteria == null && criteria2 == null)
+            {
+                range.AutoFilter(columnNumber, Type.Missing, filterEnum);
+            }
+
+            // If there is one criteria
+            else if (criteria != null && criteria2 == null)
+            {
+                if (criteria.Length == 1)
+                {
+                    range.AutoFilter(columnNumber, singularCriteria, filterEnum);                   
+                }
+                else
+                {
+                    range.AutoFilter(columnNumber, criteria, filterEnum);
+                }               
+            }
+
+            // If there are two criteria
+            else
+            {
+                if (criteria.Length == 1)
+                {
+                    range.AutoFilter(columnNumber, singularCriteria, filterEnum, criteria2);
+                }
+                else
+                {
+                    range.AutoFilter(columnNumber, criteria, filterEnum, criteria2);
+                }                
+            }            
+        }
     }
 }
