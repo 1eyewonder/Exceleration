@@ -1,6 +1,5 @@
 C:\GitHub\Exceleration\Exceleration.Helpers\bin\Debug\Exceleration.Helpers.dll
 C:\GitHub\Exceleration\Exceleration.Helpers\bin\Debug\Exceleration.Helpers.pdb
-C:\GitHub\Exceleration\Exceleration.Helpers\obj\Debug\Exceleration.Helpers.csprojAssemblyReference.cache
 C:\GitHub\Exceleration\Exceleration.Helpers\obj\Debug\Exceleration.Helpers.csproj.ResolveComReference.cache
 C:\GitHub\Exceleration\Exceleration.Helpers\obj\Debug\Exceleration.Helpers.csproj.CoreCompileInputs.cache
 C:\GitHub\Exceleration\Exceleration.Helpers\obj\Debug\Exceleration.Helpers.dll

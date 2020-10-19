@@ -18,6 +18,7 @@ namespace Exceleration.Build
         private readonly WorksheetCommands _worksheetCommands;
         private readonly RangeCommands _rangeCommands;
         private readonly FilterCommands _filterCommands;
+        private readonly DataCommands _dataCommands;
         private bool _inRepeat = false;
         private int _repeatStart = 0;
         private int _repeatEnd = 0;
@@ -30,6 +31,7 @@ namespace Exceleration.Build
             _rangeCommands = new RangeCommands();
             _worksheetCommands = new WorksheetCommands();
             _filterCommands = new FilterCommands();
+            _dataCommands = new DataCommands();
         }
 
         /// <summary>
@@ -102,6 +104,7 @@ namespace Exceleration.Build
                     reference = GetString(i, referenceColumn).ToUpper();
                     name = GetString(i, nameColumn);
                     target = GetString(i, targetColumn);
+                    auxillary = GetString(i, auxillaryColumn);
                 }
                
                 switch (commandType)
@@ -336,6 +339,23 @@ namespace Exceleration.Build
                                 break;
                             case "TEST":
                                 
+                                break;
+                        }
+
+                        break;
+                    #endregion
+
+                    #region Data
+                    case CommandType.Data:
+
+                        switch(command)
+                        {
+                            case DataCommands.SetValue:
+                                break;
+
+                            case DataCommands.FindAndReplace:
+                                bool matchCase = GetBoolean(i, referenceColumn);
+                                _dataCommands.FindAndReplaceCommand(workbook.ActiveSheet, target, name, auxillary, option, matchCase);
                                 break;
                         }
 

@@ -160,6 +160,7 @@
     <Compile Include="Build\MainBuilder.cs" />
     <Compile Include="Commands\CodeCommands.cs" />
     <Compile Include="Commands\CommandType.cs" />
+    <Compile Include="Commands\DataCommands.cs" />
     <Compile Include="Commands\FilterCommands.cs" />
     <Compile Include="Commands\RangeCommands.cs" />
     <Compile Include="Commands\WorkbookCommands.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="CoreHelpers\CommandHelper.cs" />
     <Compile Include="CoreHelpers\OptionHelper.cs" />
     <Compile Include="Options\ExcelAutoFilterOptions.cs" />
+    <Compile Include="Options\MatchValueOptions.cs" />
     <Compile Include="Options\RangeOptions.cs" />
     <Compile Include="Options\ReferenceOptions.cs" />
     <Compile Include="Options\WorkbookOptions.cs" />
@@ -234,6 +236,7 @@
     <None Include="Icons\outline_view_week_black_18dp.png" />
     <None Include="Icons\outline_table_view_black_18dp.png" />
     <None Include="Icons\outline_grid_on_black_18dp.png" />
+    <None Include="Icons\outline_find_in_page_black_18dp.png" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
   <ItemGroup>

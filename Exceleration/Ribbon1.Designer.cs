@@ -45,6 +45,7 @@
             this.RangeCommandsButton = this.Factory.CreateRibbonButton();
             this.AddCodeCommandsButton = this.Factory.CreateRibbonButton();
             this.AddFilterCommandsButton = this.Factory.CreateRibbonButton();
+            this.AddDataCommandsButton = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
@@ -73,6 +74,7 @@
             this.group2.Items.Add(this.RangeCommandsButton);
             this.group2.Items.Add(this.AddCodeCommandsButton);
             this.group2.Items.Add(this.AddFilterCommandsButton);
+            this.group2.Items.Add(this.AddDataCommandsButton);
             this.group2.Label = "Command Options";
             this.group2.Name = "group2";
             // 
@@ -143,6 +145,14 @@
             this.AddFilterCommandsButton.ShowImage = true;
             this.AddFilterCommandsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.AddFilterCommandsButton_Click);
             // 
+            // AddDataCommandsButton
+            // 
+            this.AddDataCommandsButton.Image = global::Exceleration.Properties.Resources.outline_find_in_page_black_18dp;
+            this.AddDataCommandsButton.Label = "Add Data Commands";
+            this.AddDataCommandsButton.Name = "AddDataCommandsButton";
+            this.AddDataCommandsButton.ShowImage = true;
+            this.AddDataCommandsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.AddDataCommandsButton_Click);
+            // 
             // Ribbon1
             // 
             this.Name = "Ribbon1";
@@ -172,6 +182,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton AddCodeCommandsButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton AddWorksheetCommandsButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton AddFilterCommandsButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton AddDataCommandsButton;
     }
 
     partial class ThisRibbonCollection

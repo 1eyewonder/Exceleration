@@ -19,6 +19,12 @@ namespace Exceleration.Commands
         public const string RenameRange = "RENAME RANGE";
         public const string DeleteRangeContents = "DELETE RANGE CONTENTS";
 
+        // Add commands to help get ranges for data users won't always know the size of. Below are ideas and not all necessarily needed
+        public const string GetColumnRange = "GET COLUMN RANGE";
+        public const string GetRowRange = "GET ROW RANGE";
+        public const string GetTableRange = "GET TABLE RANGE";
+        public const string MergeRanges = "MERGE RANGES";
+
         public void AddWorkbookNamedRange(Excel.Workbook workbook, string name, string range)
         {
             workbook.CreateNamedRange(name, range);

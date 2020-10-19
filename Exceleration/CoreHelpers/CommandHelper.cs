@@ -83,5 +83,14 @@ namespace Exceleration.CoreHelpers
                  new CommandItem(CommandType.Filter, FilterCommands.DeleteDataFilters,"Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command"),
             };
         }
+
+        public static List<CommandItem> GetDataCommands()
+        {
+            return new List<CommandItem>
+            {
+                new CommandItem(CommandType.Data, DataCommands.SetValue,"Not needed for this command", "Not needed for this command", "Not needed for this command", "Not needed for this command", "Not needed for this command"),                
+                new CommandItem(CommandType.Data, DataCommands.FindAndReplace,"See match value options. Sets the search parameters to the whole cell value or a part of it.", "Set true to match case of search. False will not match the case.", "Text to search for", "Cell range find and replace is to be conducted in.", "Value to replace finding(s)."),
+            };
+        }
     }
 }
