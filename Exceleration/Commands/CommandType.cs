@@ -12,5 +12,6 @@ namespace Exceleration.Commands
         public const string Range = "RANGE";
         public const string Workbook = "WORKBOOK";
         public const string Code = "CODE";
+        public const string Filter = "FILTER";
     }
 }

@@ -67,5 +67,21 @@ namespace Exceleration.CoreHelpers
                 new CommandItem(CommandType.Worksheet, WorksheetCommands.DeleteRow,"Not needed for this command","Not needed for this command","Not needed for this command","Cell to have row deleted. Rows to below the row being deleted will shift up.","Not needed for this command"),
             };
         }
+
+        public static List<CommandItem> GetFilterCommands()
+        {
+            return new List<CommandItem>
+            {
+                 new CommandItem(CommandType.Filter, FilterCommands.AddDataFilter,"Specifies type of filter added." + "\n" + "AND: Logical 'AND' of criteria 1 and 2." + "\n" + "OR: Logical 'OR' of criteria 1 and 2." + "\n" + "FILTER VALUES: filters data for values entered. Read on in named column for advanced filtering." + "\n" +
+                 "TOP 10 ITEMS and BOTTOM 10 ITEMS: Gets the top or bottom 10 items of the data specified either sorted numerically or alphabetically depending on data in the column. You can enter other integer values in the name column to choose the top 5 items, for instance." + "\n" +
+                 "TOP 10 PERCENT and BOTTOM 10 PERCENT: Gets the top or bottom 10 percent of the data specified either sorted numerically or alphabetically depending on data in the column. You can enter other integer values in the name column to choose the top 5 percent, for instance.",
+                 "Column index, starting from the left and at 1, you wish to apply the filter to",
+                 "Search criteria for the current filter." + "\n" +  "If you have multiple values to filter for, use comma delimited text with no spaces to break up values i.e. 'Car,Truck,Van'." + "\n" +  "If you are looking for numerics or dates, you can use the '<,<=,>,>=, and <>' operators to find values related to the desired value." + "\n" + 
+                 "If you are looking for blank cells, just place an '=' in the name column." + "\n" + "If you are looking for nonblank fields, enter '<>' in the name column." + "\n" + "You can also use wildcards in your filter criteria. You can search using a '?' to fill in a single character." +
+                 " For example, 'sm?th' finds 'smith' and 'smyth'." + "\n" + "You can also use an asterisk to represent any number of characters. For example, '*east' finds 'Northeast' and 'Southeast'.","Cell range to apply filtering to. Include the header row in the range.","Second set of criteria, if any, to apply for filter. If 'AND' or 'OR' options are selected, this is where you will apply your comparative criteria."),
+                 new CommandItem(CommandType.Filter, FilterCommands.ClearDataFilters,"Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command"),
+                 new CommandItem(CommandType.Filter, FilterCommands.DeleteDataFilters,"Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command"),
+            };
+        }
     }
 }

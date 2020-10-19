@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using Exceleration.Helpers.Enums;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Exceleration.CoreHelpers
 {
@@ -33,7 +34,7 @@ namespace Exceleration.CoreHelpers
         {
             var options = new WorkbookOptions();
             return options.GetFieldValues();
-        }   
+        }
 
         public static List<string> GetReferenceOptions()
         {
@@ -46,6 +47,13 @@ namespace Exceleration.CoreHelpers
             var options = new RangeOptions();
             return options.GetFieldValues();
         }
+
+        public static List<string> GetExcelAutoFilterOptions()
+        {
+            var options = new ExcelAutoFilterOptions();
+            return options.GetFieldValues();
+        }
+
 
         public static ReferenceEnum GetReferenceEnumFromString(string reference)
         {
@@ -80,6 +88,36 @@ namespace Exceleration.CoreHelpers
 
                 default:
                     return PositionalEnum.AtEnd;
+            }
+        }
+
+        public static Excel.XlAutoFilterOperator GetExcelAutoFilterOperatorFromString(string text)
+        {
+            switch (text)
+            {
+                case ExcelAutoFilterOptions.And:
+                    return Excel.XlAutoFilterOperator.xlAnd;
+
+                case ExcelAutoFilterOptions.Or:
+                    return Excel.XlAutoFilterOperator.xlOr;
+
+                case ExcelAutoFilterOptions.Top10Items:
+                    return Excel.XlAutoFilterOperator.xlTop10Items;
+
+                case ExcelAutoFilterOptions.Top10Percent:
+                    return Excel.XlAutoFilterOperator.xlTop10Percent;
+
+                case ExcelAutoFilterOptions.Bottom10Items:
+                    return Excel.XlAutoFilterOperator.xlBottom10Items;
+
+                case ExcelAutoFilterOptions.Bottom10Percent:
+                    return Excel.XlAutoFilterOperator.xlBottom10Percent;
+
+                case ExcelAutoFilterOptions.FilterValues:
+                    return Excel.XlAutoFilterOperator.xlFilterValues;
+
+                default:
+                    return Excel.XlAutoFilterOperator.xlAnd;
             }
         }
     }

@@ -14,9 +14,10 @@ namespace Exceleration.Build
 {   
     public class MainBuilder : ExcelParse
     {
-        private WorkbookCommands _workbookCommands;
-        private WorksheetCommands _worksheetCommands;
-        private RangeCommands _rangeCommands;
+        private readonly WorkbookCommands _workbookCommands;
+        private readonly WorksheetCommands _worksheetCommands;
+        private readonly RangeCommands _rangeCommands;
+        private readonly FilterCommands _filterCommands;
         private bool _inRepeat = false;
         private int _repeatStart = 0;
         private int _repeatEnd = 0;
@@ -28,6 +29,7 @@ namespace Exceleration.Build
             _workbookCommands = new WorkbookCommands();
             _rangeCommands = new RangeCommands();
             _worksheetCommands = new WorksheetCommands();
+            _filterCommands = new FilterCommands();
         }
 
         /// <summary>
@@ -68,7 +70,8 @@ namespace Exceleration.Build
             var optionsColumn = commandColumn + 1;
             var referenceColumn = optionsColumn + 1;
             var nameColumn = referenceColumn + 1;
-            var valueColumn = nameColumn + 1;
+            var targetColumn = nameColumn + 1;
+            var auxillaryColumn = targetColumn + 1;
 
             // Starts at cell below starting range for the sheet
             int i = startCell.Row + 1;
@@ -81,7 +84,9 @@ namespace Exceleration.Build
                 string option;
                 string reference;
                 string name;
-                string value;
+                string target;
+                string auxillary;
+
                 ReferenceEnum referenceType = ReferenceEnum.ByName;
                 PositionalEnum positional = PositionalEnum.AtEnd;
 
@@ -96,7 +101,7 @@ namespace Exceleration.Build
                     option = GetString(i, optionsColumn).ToUpper();
                     reference = GetString(i, referenceColumn).ToUpper();
                     name = GetString(i, nameColumn);
-                    value = GetString(i, valueColumn);
+                    target = GetString(i, targetColumn);
                 }
                
                 switch (commandType)
@@ -107,35 +112,35 @@ namespace Exceleration.Build
                         switch (command)
                         {
                             case WorkbookCommands.AddSheet:
-                                _workbookCommands.AddSheetCommand(workbook, value);                                                               
+                                _workbookCommands.AddSheetCommand(workbook, target);                                                               
                                 break;
 
                             case WorkbookCommands.CopySheet:
                                 referenceType = OptionHelper.GetReferenceEnumFromString(reference);
-                                _workbookCommands.CopySheetCommand(workbook, value, name, referenceType);
+                                _workbookCommands.CopySheetCommand(workbook, target, name, referenceType);
                                 break;
 
                             case WorkbookCommands.DeleteSheet:
                                 referenceType = OptionHelper.GetReferenceEnumFromString(reference);
-                                _workbookCommands.DeleteSheetCommand(workbook, value, referenceType);
+                                _workbookCommands.DeleteSheetCommand(workbook, target, referenceType);
                                 break;
 
                             case WorkbookCommands.MoveSheet:
 
                                 positional = OptionHelper.GetPositionalEnumFromString(option);
                                 referenceType = OptionHelper.GetReferenceEnumFromString(reference);
-                                _workbookCommands.MoveWorksheetCommand(workbook, value, positional, name, referenceType);
+                                _workbookCommands.MoveWorksheetCommand(workbook, target, positional, name, referenceType);
                                 break;
 
                             case WorkbookCommands.TargetSheet:
 
                                 referenceType = OptionHelper.GetReferenceEnumFromString(reference);
-                                _workbookCommands.TargetSheetCommand(workbook, value, referenceType);
+                                _workbookCommands.TargetSheetCommand(workbook, target, referenceType);
                                 break;
 
                             case WorkbookCommands.RenameSheet:
                                 referenceType = OptionHelper.GetReferenceEnumFromString(reference);
-                                _workbookCommands.RenameSheetCommand(workbook, value, name, referenceType);
+                                _workbookCommands.RenameSheetCommand(workbook, target, name, referenceType);
                                 break;
                         }
 
@@ -148,22 +153,22 @@ namespace Exceleration.Build
                         switch(command)
                         {
                             case WorksheetCommands.AddColumn:
-                                _worksheetCommands.AddColumnCommand(workbook.ActiveSheet, value);
+                                _worksheetCommands.AddColumnCommand(workbook.ActiveSheet, target);
                                 break;
                             case WorksheetCommands.AddRow:
-                                _worksheetCommands.AddRowCommand(workbook.ActiveSheet, value);
+                                _worksheetCommands.AddRowCommand(workbook.ActiveSheet, target);
                                 break;
                             case WorksheetCommands.MoveColumn:
-                                _worksheetCommands.MoveColumnCommand(workbook.ActiveSheet, value, name);
+                                _worksheetCommands.MoveColumnCommand(workbook.ActiveSheet, target, name);
                                 break;
                             case WorksheetCommands.MoveRow:
-                                _worksheetCommands.MoveRowCommand(workbook.ActiveSheet, value, name);
+                                _worksheetCommands.MoveRowCommand(workbook.ActiveSheet, target, name);
                                 break;
                             case WorksheetCommands.DeleteColumn:
-                                _worksheetCommands.DeleteColumnCommand(workbook.ActiveSheet, value);
+                                _worksheetCommands.DeleteColumnCommand(workbook.ActiveSheet, target);
                                 break;
                             case WorksheetCommands.DeleteRow:
-                                _worksheetCommands.DeleteRowCommand(workbook.ActiveSheet, value);
+                                _worksheetCommands.DeleteRowCommand(workbook.ActiveSheet, target);
                                 break;
                         }
 
@@ -179,13 +184,13 @@ namespace Exceleration.Build
                                 switch (option)
                                 {
                                     case RangeOptions.WorkbookScope:
-                                        _rangeCommands.AddWorkbookNamedRange(workbook, name, value);
+                                        _rangeCommands.AddWorkbookNamedRange(workbook, name, target);
                                         break;
                                     case RangeOptions.WorksheetScope:
-                                        _rangeCommands.AddWorksheetNamedRange(workbook.ActiveSheet, name, value);
+                                        _rangeCommands.AddWorksheetNamedRange(workbook.ActiveSheet, name, target);
                                         break;
                                     default:
-                                        _rangeCommands.AddWorkbookNamedRange(workbook, name, value);
+                                        _rangeCommands.AddWorkbookNamedRange(workbook, name, target);
                                         break;
                                 }
                                 break;
@@ -196,13 +201,13 @@ namespace Exceleration.Build
                                 switch (option)
                                 {
                                     case RangeOptions.WorkbookScope:
-                                        _rangeCommands.DeleteWorkbookRangeContents(workbook, value, referenceType);
+                                        _rangeCommands.DeleteWorkbookRangeContents(workbook, target, referenceType);
                                         break;
                                     case RangeOptions.WorksheetScope:
-                                        _rangeCommands.DeleteWorksheetRangeContents(workbook.ActiveSheet, value, referenceType);
+                                        _rangeCommands.DeleteWorksheetRangeContents(workbook.ActiveSheet, target, referenceType);
                                         break;
                                     default:
-                                        _rangeCommands.DeleteWorkbookRangeContents(workbook, value, referenceType);
+                                        _rangeCommands.DeleteWorkbookRangeContents(workbook, target, referenceType);
                                         break;
                                 }
 
@@ -213,13 +218,13 @@ namespace Exceleration.Build
                                 switch(option)
                                 {
                                     case RangeOptions.WorkbookScope:
-                                        _rangeCommands.RemoveWorkbookNamedRange(workbook, value);
+                                        _rangeCommands.RemoveWorkbookNamedRange(workbook, target);
                                         break;
                                     case RangeOptions.WorksheetScope:
-                                        _rangeCommands.RemoveWorksheetNamedRange(workbook.ActiveSheet, value);
+                                        _rangeCommands.RemoveWorksheetNamedRange(workbook.ActiveSheet, target);
                                         break;
                                     default:
-                                        _rangeCommands.RemoveWorkbookNamedRange(workbook, value);
+                                        _rangeCommands.RemoveWorkbookNamedRange(workbook, target);
                                         break;
                                 }
 
@@ -229,33 +234,34 @@ namespace Exceleration.Build
                                 switch (option)
                                 {
                                     case RangeOptions.WorkbookScope:
-                                        _rangeCommands.RenameWorkbookRange(workbook, value, name);
+                                        _rangeCommands.RenameWorkbookRange(workbook, target, name);
                                         break;
                                     case RangeOptions.WorksheetScope:
-                                        _rangeCommands.RenameWorksheetRange(workbook.ActiveSheet, value, name);
+                                        _rangeCommands.RenameWorksheetRange(workbook.ActiveSheet, target, name);
                                         break;
                                     default:
-                                        _rangeCommands.RenameWorkbookRange(workbook, value, name);
+                                        _rangeCommands.RenameWorkbookRange(workbook, target, name);
                                         break;
                                 }
 
                                 break;
 
                             case RangeCommands.SetNamedRange:
-                                _rangeCommands.SetNamedRangeCommand(workbook, name, value);
+                                _rangeCommands.SetNamedRangeCommand(workbook, name, target);
                                 break;
                         }
 
                         break;
                     #endregion
 
+                    #region Code
                     case CommandType.Code:
 
                         switch (command)
                         {
                             case CodeCommands.Sub:
                                 MainBuilder runblock = null;
-                                var subName = GetString(i, valueColumn);
+                                var subName = GetString(i, targetColumn);
                                 string worksheetName;
 
                                 // Allows for calling sub-routines on different worksheets
@@ -279,7 +285,7 @@ namespace Exceleration.Build
                             case CodeCommands.If:
                                 ValidateIf(i, commandColumn);
 
-                                var booleanValue = GetBoolean(i, valueColumn);
+                                var booleanValue = GetBoolean(i, targetColumn);
 
                                 // Skips to end if command line if false
                                 if (!booleanValue)
@@ -296,14 +302,45 @@ namespace Exceleration.Build
                                 ValidateRepeat(i, commandColumn);
                                 _repeatStart = i;
                                 _repeatEnd = GetEndRepeatRow(i, commandColumn);
-                                _repeatCount = GetInt(i, valueColumn);
+                                _repeatCount = GetInt(i, targetColumn);
                                 _repeatIndex = 1;
-                                SetValue(i, valueColumn+1, _repeatIndex.ToString());
+                                SetValue(i, targetColumn + 1, _repeatIndex.ToString());
                                 _inRepeat = true;
                                 break;
                         }
 
                         break;
+                    #endregion
+
+                    #region Filter
+                    case CommandType.Filter:
+
+                        switch(command)
+                        {
+                            case FilterCommands.AddDataFilter:
+                                var referenceInt = GetInt(i, referenceColumn);                              
+                                var criteriaList = GetArrayString(i, nameColumn);
+                                auxillary = GetString(i, auxillaryColumn);
+
+                                var filterType = OptionHelper.GetExcelAutoFilterOperatorFromString(option);                             
+                                 _filterCommands.AddDataFilterCommand(workbook.ActiveSheet, target, referenceInt, filterType, criteriaList, auxillary);
+
+                                break;
+
+                            case FilterCommands.ClearDataFilters:
+                                _filterCommands.ClearDataFiltersCommand(workbook.ActiveSheet);
+                                break;
+
+                            case FilterCommands.DeleteDataFilters:
+                                _filterCommands.DeleteDataFiltersCommand(workbook.ActiveSheet);
+                                break;
+                            case "TEST":
+                                
+                                break;
+                        }
+
+                        break;
+                    #endregion
                 }
 
                 i++;
@@ -325,7 +362,7 @@ namespace Exceleration.Build
                         {
                             i = _repeatStart + 1;
                             _repeatIndex++;
-                            SetValue(_repeatStart, valueColumn+1, _repeatIndex.ToString());
+                            SetValue(_repeatStart, targetColumn+1, _repeatIndex.ToString());
                         }
                     }
                 }

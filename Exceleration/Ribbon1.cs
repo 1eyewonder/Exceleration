@@ -44,14 +44,15 @@ namespace Exceleration
             worksheet.Range["B1"].Value = "Command";
             worksheet.Range["C1"].Value = "Options";
             worksheet.Range["D1"].Value = "Reference";
-            worksheet.Range["E1"].Value = "Name";
-            worksheet.Range["F1"].Value = "Value";
-            worksheet.Range["G1"].Value = "Output";
+            worksheet.Range["E1"].Value = "New/Reference Name";
+            worksheet.Range["F1"].Value = "Target Value";
+            worksheet.Range["G1"].Value = "Auxillary Value";
 
             // Add option ranges
             AddOptions(workbook, nameof(WorkbookOptions), "J", OptionHelper.GetWorkbookOptions());
             AddOptions(workbook, nameof(ReferenceOptions), "K", OptionHelper.GetReferenceOptions());
             AddOptions(workbook, nameof(RangeOptions), "L", OptionHelper.GetRangeOptions());
+            AddOptions(workbook, nameof(ExcelAutoFilterOptions), "M", OptionHelper.GetExcelAutoFilterOptions());
 
             // Add command ranges
             int counter = 2;
@@ -59,6 +60,7 @@ namespace Exceleration
             counter = AddCommands(workbook, nameof(WorksheetCommands), counter, CommandHelper.GetWorksheetCommands());
             counter = AddCommands(workbook, nameof(RangeCommands), counter, CommandHelper.GetRangeCommands());
             counter = AddCommands(workbook, nameof(CodeCommands), counter, CommandHelper.GetCodeCommands());
+            counter = AddCommands(workbook, nameof(FilterCommands), counter, CommandHelper.GetFilterCommands());
 
             #region Styling
             // Styles the command table
@@ -94,7 +96,7 @@ namespace Exceleration
             borderRange.AutoFilter(1);
 
             // Styles the options tables
-            stylingRange = (Excel.Range)worksheet.Range["J:L"];
+            stylingRange = (Excel.Range)worksheet.Range["J:M"];
             stylingRange.ColumnWidth = 25;
             stylingRange.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;    
             #endregion
@@ -144,8 +146,8 @@ namespace Exceleration
                 worksheet.Range[$"C{i}"].Value = c.Options;
                 worksheet.Range[$"D{i}"].Value = c.Reference;
                 worksheet.Range[$"E{i}"].Value = c.Name;
-                worksheet.Range[$"F{i}"].Value = c.Value;
-                worksheet.Range[$"G{i}"].Value = c.Output;
+                worksheet.Range[$"F{i}"].Value = c.TargetValue;
+                worksheet.Range[$"G{i}"].Value = c.AuxillaryValue;
                 i++;
             }
 
@@ -154,6 +156,7 @@ namespace Exceleration
 
             return i + 1;
         }
+
         private void AddTemplate()
         {
             Excel.Worksheet workSheet = null;
@@ -192,9 +195,9 @@ namespace Exceleration
             workSheet.Range["B5"].Value = "Command";
             workSheet.Range["C5"].Value = "Options";
             workSheet.Range["D5"].Value = "Reference";
-            workSheet.Range["E5"].Value = "Name";
-            workSheet.Range["F5"].Value = "Value";
-            workSheet.Range["G5"].Value = "Output";
+            workSheet.Range["E5"].Value = "New/Reference Name";
+            workSheet.Range["F5"].Value = "Target Value";
+            workSheet.Range["G5"].Value = "Auxillary Value";
 
             XlApp.ActiveWorkbook.CreateNamedRange(workSheet.Name + "Type", "A5");
 
@@ -322,6 +325,11 @@ namespace Exceleration
                     range.AddDropDownList(nameof(ReferenceOptions));
                 }                
             }            
+        }
+
+        private void AddFilterCommandsButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            AddRowValidation(CommandType.Filter, nameof(FilterCommands), nameof(ExcelAutoFilterOptions));
         }
     }
 }
