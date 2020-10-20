@@ -125,5 +125,40 @@ namespace Exceleration.Helpers.Extensions
                 }                
             }            
         }
+
+        /// <summary>
+        /// Find and replace text within a range
+        /// </summary>
+        /// <param name="range">Target range</param>
+        /// <param name="oldText">Text to find</param>
+        /// <param name="newText">To to replace with</param>
+        /// <param name="whole">True if whole cell string is to be replaced</param>
+        /// <param name="matchCase">True if oldText case matters in search</param>
+        /// Per Microsoft documentation, the active selection/active cell is not affected
+        public static void FindAndReplace(this Excel.Range range, string oldText, string newText, bool whole = false, bool matchCase = false)
+        {
+            if (whole)
+            {
+                if (matchCase)
+                {
+                    range.Replace(oldText, newText, XlLookAt.xlWhole, XlSearchOrder.xlByRows, true);
+                }
+                else
+                {
+                    range.Replace(oldText, newText, XlLookAt.xlWhole, XlSearchOrder.xlByRows, false);
+                }
+            }
+            else
+            {
+                if (matchCase)
+                {
+                    range.Replace(oldText, newText, XlLookAt.xlPart, XlSearchOrder.xlByRows, true);
+                }
+                else
+                {
+                    range.Replace(oldText, newText, XlLookAt.xlPart, XlSearchOrder.xlByRows, true);
+                }
+            }
+        }
     }
 }

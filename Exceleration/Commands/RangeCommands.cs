@@ -18,6 +18,9 @@ namespace Exceleration.Commands
         public const string RemoveNamedRange = "REMOVE NAMED RANGE";
         public const string RenameRange = "RENAME RANGE";
         public const string DeleteRangeContents = "DELETE RANGE CONTENTS";
+        public const string GetColumnRange = "GET COLUMN RANGE";
+        public const string GetRowRange = "GET ROW RANGE";
+        public const string GetDataSetRange = "GET DATASET RANGE";
 
         public void AddWorkbookNamedRange(Excel.Workbook workbook, string name, string range)
         {
@@ -91,5 +94,23 @@ namespace Exceleration.Commands
                 workbook.DeleteRangeContents(range, false);
             }
         }
-    }
+     
+        public string GetColumnRangeCommand(Excel.Worksheet worksheet, string range)
+        {
+            Excel.Range theRange = worksheet.GetColumnRange(range);
+            return theRange.Address;
+        }
+       
+        public string GetRowRangeCommand(Excel.Worksheet worksheet, string range)
+        {
+            Excel.Range theRange = worksheet.GetRowRange(range);
+            return theRange.Address;
+        }
+
+        public string GetDataSetRangeCommand(Excel.Worksheet worksheet, string range)
+        {
+            Excel.Range theRange = worksheet.GetDataSetRange(range);
+            return theRange.Address;
+        }
+    }    
 }

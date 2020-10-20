@@ -18,6 +18,7 @@ namespace Exceleration.Build
         private readonly WorksheetCommands _worksheetCommands;
         private readonly RangeCommands _rangeCommands;
         private readonly FilterCommands _filterCommands;
+        private readonly DataCommands _dataCommands;
         private bool _inRepeat = false;
         private int _repeatStart = 0;
         private int _repeatEnd = 0;
@@ -30,6 +31,7 @@ namespace Exceleration.Build
             _rangeCommands = new RangeCommands();
             _worksheetCommands = new WorksheetCommands();
             _filterCommands = new FilterCommands();
+            _dataCommands = new DataCommands();
         }
 
         /// <summary>
@@ -102,6 +104,7 @@ namespace Exceleration.Build
                     reference = GetString(i, referenceColumn).ToUpper();
                     name = GetString(i, nameColumn);
                     target = GetString(i, targetColumn);
+                    auxillary = GetString(i, auxillaryColumn);
                 }
                
                 switch (commandType)
@@ -178,8 +181,9 @@ namespace Exceleration.Build
 
                     #region Range
                     case CommandType.Range:
+                        string rangeAddress;
                         switch (command)
-                        {
+                        {                           
                             case RangeCommands.AddNamedRange:
                                 switch (option)
                                 {
@@ -248,6 +252,21 @@ namespace Exceleration.Build
 
                             case RangeCommands.SetNamedRange:
                                 _rangeCommands.SetNamedRangeCommand(workbook, name, target);
+                                break;
+
+                            case RangeCommands.GetColumnRange:
+                                rangeAddress = _rangeCommands.GetColumnRangeCommand(workbook.ActiveSheet, target);
+                                SetValue(i, auxillaryColumn, target + ":" + rangeAddress);
+                                break;
+
+                            case RangeCommands.GetRowRange:
+                                rangeAddress = _rangeCommands.GetRowRangeCommand(workbook.ActiveSheet, target);
+                                SetValue(i, auxillaryColumn, target + ":" + rangeAddress);
+                                break;
+
+                            case RangeCommands.GetDataSetRange:
+                                rangeAddress = _rangeCommands.GetDataSetRangeCommand(workbook.ActiveSheet, target);
+                                SetValue(i, auxillaryColumn, target + ":" + rangeAddress);
                                 break;
                         }
 
@@ -336,6 +355,24 @@ namespace Exceleration.Build
                                 break;
                             case "TEST":
                                 
+                                break;
+                        }
+
+                        break;
+                    #endregion
+
+                    #region Data
+                    case CommandType.Data:
+
+                        switch(command)
+                        {
+                            case DataCommands.SetValue:
+                                _dataCommands.SetValueCommand(workbook.ActiveSheet, target, auxillary);
+                                break;
+
+                            case DataCommands.FindAndReplace:
+                                bool matchCase = GetBoolean(i, referenceColumn);
+                                _dataCommands.FindAndReplaceCommand(workbook.ActiveSheet, target, name, auxillary, option, matchCase);
                                 break;
                         }
 

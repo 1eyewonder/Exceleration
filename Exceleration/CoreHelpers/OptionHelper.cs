@@ -54,6 +54,12 @@ namespace Exceleration.CoreHelpers
             return options.GetFieldValues();
         }
 
+        public static List<string> GetMatchValueOptions()
+        {
+            var options = new MatchValueOptions();
+            return options.GetFieldValues();
+        }
+
 
         public static ReferenceEnum GetReferenceEnumFromString(string reference)
         {

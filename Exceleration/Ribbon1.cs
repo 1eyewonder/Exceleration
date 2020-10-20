@@ -53,6 +53,7 @@ namespace Exceleration
             AddOptions(workbook, nameof(ReferenceOptions), "K", OptionHelper.GetReferenceOptions());
             AddOptions(workbook, nameof(RangeOptions), "L", OptionHelper.GetRangeOptions());
             AddOptions(workbook, nameof(ExcelAutoFilterOptions), "M", OptionHelper.GetExcelAutoFilterOptions());
+            AddOptions(workbook, nameof(MatchValueOptions), "N", OptionHelper.GetMatchValueOptions());
 
             // Add command ranges
             int counter = 2;
@@ -61,6 +62,7 @@ namespace Exceleration
             counter = AddCommands(workbook, nameof(RangeCommands), counter, CommandHelper.GetRangeCommands());
             counter = AddCommands(workbook, nameof(CodeCommands), counter, CommandHelper.GetCodeCommands());
             counter = AddCommands(workbook, nameof(FilterCommands), counter, CommandHelper.GetFilterCommands());
+            counter = AddCommands(workbook, nameof(DataCommands), counter, CommandHelper.GetDataCommands());
 
             #region Styling
             // Styles the command table
@@ -96,7 +98,7 @@ namespace Exceleration
             borderRange.AutoFilter(1);
 
             // Styles the options tables
-            stylingRange = (Excel.Range)worksheet.Range["J:M"];
+            stylingRange = (Excel.Range)worksheet.Range["J:N"];
             stylingRange.ColumnWidth = 25;
             stylingRange.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;    
             #endregion
@@ -230,6 +232,9 @@ namespace Exceleration
 
             try
             {
+                Globals.ThisAddIn.Application.Interactive = false;
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
                 var logs = _mainBuilder.Run(true);
 
                 if (logs.Count > 0)
@@ -245,6 +250,11 @@ namespace Exceleration
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ran into an error while running", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Globals.ThisAddIn.Application.Interactive = true;
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
             }
         }
 
@@ -330,6 +340,11 @@ namespace Exceleration
         private void AddFilterCommandsButton_Click(object sender, RibbonControlEventArgs e)
         {
             AddRowValidation(CommandType.Filter, nameof(FilterCommands), nameof(ExcelAutoFilterOptions));
+        }
+
+        private void AddDataCommandsButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            AddRowValidation(CommandType.Data, nameof(DataCommands), nameof(MatchValueOptions));
         }
     }
 }

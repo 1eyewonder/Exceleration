@@ -36,9 +36,12 @@ namespace Exceleration.CoreHelpers
                 new CommandItem(CommandType.Range, RangeCommands.RenameRange,"See range options. Workbook scope will attempt to rename the named range from the workbook scope while worksheet scope will attempt to rename the named range from the current worksheet's scope. If blank, will default to workbook scope. Workbook scope will currently look through all named ranges in workbook and worksheet and rename the first match it encounters.",
                 "Not needed for this command","New range name", "Old range name","Not needed for this command"),
                 new CommandItem(CommandType.Range, RangeCommands.DeleteRangeContents,"Workbook scope will delete range contents within the workbook, whether it exist on the workbook or worksheet scope. Worksheet scope will delete range contents of a range that exists on the targeted sheet and within the worksheet scope. If left blank, will default to workbook scope but it is suggested to select worksheet scope for workbooks with a large set of named ranges for optimized performance.",
-                "By name declares the name in the value column is a named range having its contents deleted. By index declares the value column is a cell array having its contents deleted","Not needed for this command", "Name of range having cells deleted.","Not needed for this command")
+                "By name declares the name in the value column is a named range having its contents deleted. By index declares the value column is a cell array having its contents deleted","Not needed for this command", "Name of range having cells deleted.","Not needed for this command"),
+                new CommandItem(CommandType.Range, RangeCommands.GetColumnRange,"Not needed for this command","Not needed for this command", "Not needed for this command","See 'AddNamedRange' value column instructions. Singular cell in desired column.","Returns the range value starting with the entered cell and ending with the cell before encountering a blank cell in the column."),
+                new CommandItem(CommandType.Range, RangeCommands.GetRowRange,"Not needed for this command","Not needed for this command", "Not needed for this command","See 'AddNamedRange' value column instructions. Singular cell in the desired row","Returns the range range value starting with the entered cell and ending with the cell before encountering a blank cell in the row."),
+                new CommandItem(CommandType.Range, RangeCommands.GetDataSetRange,"Not needed for this command","Not needed for this command", "Not needed for this command","See 'AddNamedRange' value column instructions. Singular cell located on the top leftmost location of a dataset.","Returns the range value starting with the entered cell and ending with the cell before encountering a blank cell in the last row and column."),
             };
-        }
+        }      
 
         public static List<CommandItem> GetCodeCommands()
         {
@@ -81,6 +84,15 @@ namespace Exceleration.CoreHelpers
                  " For example, 'sm?th' finds 'smith' and 'smyth'." + "\n" + "You can also use an asterisk to represent any number of characters. For example, '*east' finds 'Northeast' and 'Southeast'.","Cell range to apply filtering to. Include the header row in the range.","Second set of criteria, if any, to apply for filter. If 'AND' or 'OR' options are selected, this is where you will apply your comparative criteria."),
                  new CommandItem(CommandType.Filter, FilterCommands.ClearDataFilters,"Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command"),
                  new CommandItem(CommandType.Filter, FilterCommands.DeleteDataFilters,"Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command","Not needed for this command"),
+            };
+        }
+
+        public static List<CommandItem> GetDataCommands()
+        {
+            return new List<CommandItem>
+            {
+                new CommandItem(CommandType.Data, DataCommands.SetValue,"Not needed for this command", "Not needed for this command", "Not needed for this command", "Not needed for this command", "Not needed for this command"),                
+                new CommandItem(CommandType.Data, DataCommands.FindAndReplace,"See match value options. Sets the search parameters to the whole cell value or a part of it.", "Set true to match case of search. False will not match the case.", "Text to search for", "Cell range find and replace is to be conducted in.", "Value to replace finding(s)."),
             };
         }
     }
