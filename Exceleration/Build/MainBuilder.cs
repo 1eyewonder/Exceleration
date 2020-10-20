@@ -181,8 +181,9 @@ namespace Exceleration.Build
 
                     #region Range
                     case CommandType.Range:
+                        string rangeAddress;
                         switch (command)
-                        {
+                        {                           
                             case RangeCommands.AddNamedRange:
                                 switch (option)
                                 {
@@ -251,6 +252,21 @@ namespace Exceleration.Build
 
                             case RangeCommands.SetNamedRange:
                                 _rangeCommands.SetNamedRangeCommand(workbook, name, target);
+                                break;
+
+                            case RangeCommands.GetColumnRange:
+                                rangeAddress = _rangeCommands.GetColumnRangeCommand(workbook.ActiveSheet, target);
+                                SetValue(i, auxillaryColumn, target + ":" + rangeAddress);
+                                break;
+
+                            case RangeCommands.GetRowRange:
+                                rangeAddress = _rangeCommands.GetRowRangeCommand(workbook.ActiveSheet, target);
+                                SetValue(i, auxillaryColumn, target + ":" + rangeAddress);
+                                break;
+
+                            case RangeCommands.GetDataSetRange:
+                                rangeAddress = _rangeCommands.GetDataSetRangeCommand(workbook.ActiveSheet, target);
+                                SetValue(i, auxillaryColumn, target + ":" + rangeAddress);
                                 break;
                         }
 
@@ -351,6 +367,7 @@ namespace Exceleration.Build
                         switch(command)
                         {
                             case DataCommands.SetValue:
+                                _dataCommands.SetValueCommand(workbook.ActiveSheet, target, auxillary);
                                 break;
 
                             case DataCommands.FindAndReplace:

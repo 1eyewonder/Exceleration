@@ -408,6 +408,109 @@ namespace Exceleration.Helpers.Extensions
         {
             worksheet.GetNamedRange(name).Delete();
         }
+
+        /// <summary>
+        /// Returns the range of data that exists in the column. Range will start at the parameter cell and end before the first empty row it encounters
+        /// </summary>
+        /// <param name="worksheet">Target worksheet</param>
+        /// <param name="range">Singular cell in the desired column</param>
+        /// <returns>Excel range</returns>
+        public static Excel.Range GetColumnRange(this Excel.Worksheet worksheet, string range)
+        {
+            if (worksheet.IsRange(range))
+            {
+                if (worksheet.Range[range].IsSingularCell())
+                {
+                    int rangeColumnNumber = worksheet.Range[range].Column;
+                    int lastRow = worksheet.Range[range].Row;
+
+                    while (!string.IsNullOrEmpty(worksheet.Range[$"{WorksheetHelper.GetColumnName(rangeColumnNumber)}" + $"{lastRow}"].Value))
+                    {
+                        lastRow++;
+                    }
+
+                    return worksheet.Range[$"{WorksheetHelper.GetColumnName(rangeColumnNumber)}" + $"{lastRow - 1}"];
+                }
+                else
+                {
+                    throw new Exception("Please ensure only one cell is referenced to indicate the range");
+                }
+            }
+            else
+            {
+                throw new Exception($"The range, {range}, does not exist on the current worksheet, {worksheet.Name}");
+            }
+        }
+
+        /// <summary>
+        /// Returns the range of data that exists in the row. Range will start at the parameter cell and end before the first empty column it encounters
+        /// </summary>
+        /// <param name="worksheet">Target worksheet</param>
+        /// <param name="range">Singular cell in the desired column</param>
+        /// <returns>Excel range</returns>
+        public static Excel.Range GetRowRange(this Excel.Worksheet worksheet, string range)
+        {
+            if (worksheet.IsRange(range))
+            {
+                if (worksheet.Range[range].IsSingularCell())
+                {
+                    int rangeRowNumber = worksheet.Range[range].Row;
+                    int lastColumn = worksheet.Range[range].Column;
+
+                    while (!string.IsNullOrEmpty(worksheet.Range[$"{WorksheetHelper.GetColumnName(lastColumn)}" + $"{rangeRowNumber}"].Value))
+                    {
+                        lastColumn++;
+                    }
+
+                    return worksheet.Range[$"{WorksheetHelper.GetColumnName(lastColumn - 1)}" + $"{rangeRowNumber}"];
+                }
+                else
+                {
+                    throw new Exception("Please ensure only one cell is referenced to indicate the range");
+                }
+            }
+            else
+            {
+                throw new Exception($"The range, {range}, does not exist on the current worksheet, {worksheet.Name}");
+            }
+        }
+
+        public static Excel.Range GetDataSetRange(this Excel.Worksheet worksheet, string range)
+        {
+            if (worksheet.IsRange(range))
+            {
+                if (worksheet.Range[range].IsSingularCell())
+                {
+                    int rangeRowNumber = worksheet.Range[range].Row;
+                    int lastColumn = worksheet.Range[range].Column;
+
+                    //Iterate through columns until blank cell is hit
+                    while (!string.IsNullOrEmpty(worksheet.Range[$"{WorksheetHelper.GetColumnName(lastColumn)}" + $"{rangeRowNumber}"].Value))
+                    {
+                        lastColumn++;
+                    }
+
+                    int rangeColumnNumber = worksheet.Range[$"{WorksheetHelper.GetColumnName(lastColumn - 1)}" + $"{rangeRowNumber}"].Column;
+                    int lastRow = worksheet.Range[$"{WorksheetHelper.GetColumnName(lastColumn - 1)}" + $"{rangeRowNumber}"].Row;
+
+                    // Iterate through rows until blank cell is hit
+                    while (!string.IsNullOrEmpty(worksheet.Range[$"{WorksheetHelper.GetColumnName(rangeColumnNumber)}" + $"{lastRow}"].Value))
+                    {
+                        lastRow++;
+                    }
+
+                    return worksheet.Range[$"{WorksheetHelper.GetColumnName(lastColumn - 1)}" + $"{lastRow - 1}"];
+                }
+                else
+                {
+                    throw new Exception("Please ensure only one cell is referenced to indicate the range");
+                }
+            }
+            else
+            {
+                throw new Exception($"The range, {range}, does not exist on the current worksheet, {worksheet.Name}");
+            }
+        }
         #endregion
 
         #region Filters

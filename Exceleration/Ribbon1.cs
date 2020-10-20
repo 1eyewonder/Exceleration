@@ -232,6 +232,9 @@ namespace Exceleration
 
             try
             {
+                Globals.ThisAddIn.Application.Interactive = false;
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
                 var logs = _mainBuilder.Run(true);
 
                 if (logs.Count > 0)
@@ -247,6 +250,11 @@ namespace Exceleration
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ran into an error while running", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Globals.ThisAddIn.Application.Interactive = true;
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
             }
         }
 

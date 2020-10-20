@@ -32,5 +32,17 @@ namespace Exceleration.Commands
                 throw new Exception($"The range, {range}, does not exist on the current worksheet, {worksheet.Name}");
             }
         }
+
+        public void SetValueCommand(Excel.Worksheet worksheet, string range, string value)
+        {
+            if (worksheet.IsRange(range))
+            {
+                worksheet.Range[range].Value = value;
+            }
+            else
+            {
+                throw new Exception($"The range, {range}, does not exist on the current worksheet, {worksheet.Name}");
+            }
+        }
     }
 }
