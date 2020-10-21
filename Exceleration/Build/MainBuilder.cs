@@ -268,6 +268,11 @@ namespace Exceleration.Build
                                 rangeAddress = _rangeCommands.GetDataSetRangeCommand(workbook.ActiveSheet, target);
                                 SetValue(i, auxillaryColumn, target + ":" + rangeAddress);
                                 break;
+
+                            case RangeCommands.GetHeaderCell:
+                                rangeAddress = _rangeCommands.GetHeaderCellCommand(workbook.ActiveSheet, target, name);
+                                SetValue(i, auxillaryColumn, rangeAddress);
+                                break;
                         }
 
                         break;

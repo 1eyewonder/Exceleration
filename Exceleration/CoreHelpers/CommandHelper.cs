@@ -40,6 +40,7 @@ namespace Exceleration.CoreHelpers
                 new CommandItem(CommandType.Range, RangeCommands.GetColumnRange,"Not needed for this command","Not needed for this command", "Not needed for this command","See 'AddNamedRange' value column instructions. Singular cell in desired column.","Returns the range value starting with the entered cell and ending with the cell before encountering a blank cell in the column."),
                 new CommandItem(CommandType.Range, RangeCommands.GetRowRange,"Not needed for this command","Not needed for this command", "Not needed for this command","See 'AddNamedRange' value column instructions. Singular cell in the desired row","Returns the range range value starting with the entered cell and ending with the cell before encountering a blank cell in the row."),
                 new CommandItem(CommandType.Range, RangeCommands.GetDataSetRange,"Not needed for this command","Not needed for this command", "Not needed for this command","See 'AddNamedRange' value column instructions. Singular cell located on the top leftmost location of a dataset.","Returns the range value starting with the entered cell and ending with the cell before encountering a blank cell in the last row and column."),
+                new CommandItem(CommandType.Range, RangeCommands.GetHeaderCell,"Not needed for this command","Not needed for this command", "Not needed for this command","See 'AddNamedRange' value column instructions. Singular cell in desired row.","Returns the cell range in the row where header text exists."),
             };
         }      
 
@@ -92,7 +93,7 @@ namespace Exceleration.CoreHelpers
             return new List<CommandItem>
             {
                 new CommandItem(CommandType.Data, DataCommands.SetValue,"Not needed for this command", "Not needed for this command", "Not needed for this command", "Not needed for this command", "Not needed for this command"),                
-                new CommandItem(CommandType.Data, DataCommands.FindAndReplace,"See match value options. Sets the search parameters to the whole cell value or a part of it.", "Set true to match case of search. False will not match the case.", "Text to search for", "Cell range find and replace is to be conducted in.", "Value to replace finding(s)."),
+                new CommandItem(CommandType.Data, DataCommands.FindAndReplace,"See match value options. Sets the search parameters to the whole cell value or a part of it.", "Set true to match case of search. False will not match the case.", "Text to search for", "Cell range find and replace is to be conducted in. Can use named ranges.", "Value to replace finding(s)."),
             };
         }
     }

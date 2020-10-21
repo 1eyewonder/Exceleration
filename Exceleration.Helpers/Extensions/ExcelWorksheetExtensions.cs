@@ -511,6 +511,37 @@ namespace Exceleration.Helpers.Extensions
                 throw new Exception($"The range, {range}, does not exist on the current worksheet, {worksheet.Name}");
             }
         }
+
+        public static Excel.Range GetHeaderCell(this Excel.Worksheet worksheet, string range, string headerText)
+        {
+            if (worksheet.IsRange(range))
+            {
+                if (worksheet.Range[range].IsSingularCell())
+                {
+                    int rangeRowNumber = worksheet.Range[range].Row;
+                    int lastColumn = worksheet.Range[range].Column;
+
+                    while (!string.IsNullOrEmpty(worksheet.Range[$"{WorksheetHelper.GetColumnName(lastColumn)}" + $"{rangeRowNumber}"].Value))
+                    {
+                        if (worksheet.Range[$"{WorksheetHelper.GetColumnName(lastColumn)}" + $"{rangeRowNumber}"].Value == headerText)
+                        {
+                            return worksheet.Range[$"{WorksheetHelper.GetColumnName(lastColumn)}" + $"{rangeRowNumber}"];
+                        }
+                        lastColumn++;
+                    }
+
+                    return null;
+                }
+                else
+                {
+                    throw new Exception("Please ensure only one cell is referenced to indicate the range");
+                }
+            }
+            else
+            {
+                throw new Exception($"The range, {range}, does not exist on the current worksheet, {worksheet.Name}");
+            }
+        }
         #endregion
 
         #region Filters

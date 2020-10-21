@@ -21,6 +21,7 @@ namespace Exceleration.Commands
         public const string GetColumnRange = "GET COLUMN RANGE";
         public const string GetRowRange = "GET ROW RANGE";
         public const string GetDataSetRange = "GET DATASET RANGE";
+        public const string GetHeaderCell = "GET HEADER CELL";
 
         public void AddWorkbookNamedRange(Excel.Workbook workbook, string name, string range)
         {
@@ -111,6 +112,20 @@ namespace Exceleration.Commands
         {
             Excel.Range theRange = worksheet.GetDataSetRange(range);
             return theRange.Address;
+        }
+
+        public string GetHeaderCellCommand(Excel.Worksheet worksheet, string range, string headerText)
+        {
+            Excel.Range theRange = worksheet.GetHeaderCell(range, headerText);
+
+            if (theRange != null)
+            {
+                return theRange.Address;
+            }
+            else
+            {
+                throw new Exception($"The header, {headerText}, could not be found in the desired row.");
+            }
         }
     }    
 }
