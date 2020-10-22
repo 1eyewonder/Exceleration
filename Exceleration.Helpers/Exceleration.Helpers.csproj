@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,16 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumHelper.cs" />
     <Compile Include="Enums\PositionalEnum.cs" />
     <Compile Include="Enums\ReferenceEnum.cs" />
-    <Compile Include="ExcelHelper.cs" />
+    <Compile Include="Enums\TypeEnum.cs" />
+    <Compile Include="Extensions\DataTableExtensions.cs" />
     <Compile Include="Extensions\ExcelApplicationExtensions.cs" />
     <Compile Include="Extensions\ExcelNameExtensions.cs" />
     <Compile Include="Extensions\ExcelRangeExtensions.cs" />
     <Compile Include="Extensions\ExcelWorkbookExtensions.cs" />
     <Compile Include="Extensions\ExcelWorksheetExtensions.cs" />
-    <Compile Include="RangeHelper.cs" />
     <Compile Include="FileHelper.cs" />
+    <Compile Include="ReflectionHelper.cs" />
     <Compile Include="WorkbookHelper.cs" />
     <Compile Include="WorksheetHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,6 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Styling\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

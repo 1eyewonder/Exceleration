@@ -165,6 +165,7 @@
     <Compile Include="Commands\RangeCommands.cs" />
     <Compile Include="Commands\WorkbookCommands.cs" />
     <Compile Include="Commands\WorksheetCommands.cs" />
+    <Compile Include="CoreHelpers\ObjectMapHelper.cs" />
     <Compile Include="DTOS\CommandItem.cs" />
     <Compile Include="Forms\InputForm.cs">
       <SubType>Form</SubType>
@@ -231,6 +232,7 @@
     <None Include="Icons\outline_content_copy_black_18dp.png" />
     <None Include="Icons\outline_clear_black_18dp.png" />
     <None Include="Icons\outline_create_black_18dp.png" />
+    <None Include="Icons\outline_explore_black_18dp.png" />
     <Content Include="Icons\outline_filter_alt_black_18dp.png" />
     <None Include="Icons\outline_forward_black_18dp.png" />
     <None Include="Icons\outline_view_week_black_18dp.png" />

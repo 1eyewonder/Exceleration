@@ -1,6 +1,6 @@
-﻿using Microsoft.Office.Interop.Excel;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +18,7 @@ namespace Exceleration.Helpers.Extensions
         public static void AddDropDownList(this Excel.Range range, string rangeName)
         {
             range.Validation.Delete();
-            range.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertInformation, XlFormatConditionOperator.xlBetween, $"={rangeName}", Type.Missing);
+            range.Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertInformation, Excel.XlFormatConditionOperator.xlBetween, $"={rangeName}", Type.Missing);
             range.Validation.IgnoreBlank = false;
             range.Validation.InCellDropdown = true;
         }
@@ -32,7 +32,7 @@ namespace Exceleration.Helpers.Extensions
         {
             var tempList = new List<string>();
 
-            foreach (Range r in range)
+            foreach (Excel.Range r in range)
             {
                 if (r.Value != null)
                 {
@@ -72,7 +72,7 @@ namespace Exceleration.Helpers.Extensions
         /// <param name="filterEnum">Excel enum how data will be filtered</param>
         /// <param name="criteria">First criteria for filtering</param>
         /// <param name="criteria2">Second criteria for filtering</param>
-        public static void AddAutoFilter(this Excel.Range range, int columnNumber = 1, Excel.XlAutoFilterOperator filterEnum = XlAutoFilterOperator.xlAnd, string[] criteria = null, string criteria2 = null)
+        public static void AddAutoFilter(this Excel.Range range, int columnNumber = 1, Excel.XlAutoFilterOperator filterEnum = Excel.XlAutoFilterOperator.xlAnd, string[] criteria = null, string criteria2 = null)
         {
             int columnCount = range.Columns.Count;
 
@@ -88,7 +88,7 @@ namespace Exceleration.Helpers.Extensions
             }
 
             // Adds data filter to range without filtering data
-            if (columnNumber == 1 && filterEnum == XlAutoFilterOperator.xlAnd && criteria == null && criteria2 == null)
+            if (columnNumber == 1 && filterEnum == Excel.XlAutoFilterOperator.xlAnd && criteria == null && criteria2 == null)
             {
                 range.AutoFilter(1);
             }
@@ -141,24 +141,75 @@ namespace Exceleration.Helpers.Extensions
             {
                 if (matchCase)
                 {
-                    range.Replace(oldText, newText, XlLookAt.xlWhole, XlSearchOrder.xlByRows, true);
+                    range.Replace(oldText, newText, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByRows, true);
                 }
                 else
                 {
-                    range.Replace(oldText, newText, XlLookAt.xlWhole, XlSearchOrder.xlByRows, false);
+                    range.Replace(oldText, newText, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByRows, false);
                 }
             }
             else
             {
                 if (matchCase)
                 {
-                    range.Replace(oldText, newText, XlLookAt.xlPart, XlSearchOrder.xlByRows, true);
+                    range.Replace(oldText, newText, Excel.XlLookAt.xlPart, Excel.XlSearchOrder.xlByRows, true);
                 }
                 else
                 {
-                    range.Replace(oldText, newText, XlLookAt.xlPart, XlSearchOrder.xlByRows, true);
+                    range.Replace(oldText, newText, Excel.XlLookAt.xlPart, Excel.XlSearchOrder.xlByRows, true);
                 }
             }
+        }
+
+        public static DataTable ConvertToDataTable(this Excel.Range range, Dictionary<string, Type> propertyMap)
+        {
+            // Initialize data table and convert range to array
+            DataTable dataTable = new DataTable();
+            object[,] data = range.Value2;
+            
+            for (int columnCount = 1; columnCount <= range.Columns.Count; columnCount++)
+            {
+                // Create new column in data table
+                var column = new DataColumn();
+                string columnName = data[1, columnCount].ToString();
+
+                // Checks what type is associate with the column property
+                if (propertyMap.TryGetValue(columnName, out var output))
+                {
+                    column.DataType = output;
+                    column.ColumnName = columnName;
+                    dataTable.Columns.Add(column);
+                }
+                else
+                {
+                    throw new Exception();
+                }                        
+
+                for (int rowCount = 2; rowCount <= range.Rows.Count; rowCount ++)
+                {                    
+                    dynamic cellValue;
+                    DataRow row;
+
+                    // Converts value in array to type from property map
+                    var item = data[rowCount, columnCount];
+                    cellValue = Convert.ChangeType(item, output);                    
+
+                    // Creates new row in data table if first item for the row
+                    if (columnCount == 1)
+                    {
+                        row = dataTable.NewRow();
+                        row[columnName] = cellValue;
+                        dataTable.Rows.Add(row);
+                    }
+                    else
+                    {
+                        row = dataTable.Rows[rowCount-2];
+                        row[columnName] = cellValue;
+                    }
+                }                
+            }
+
+            return dataTable;
         }
     }
 }

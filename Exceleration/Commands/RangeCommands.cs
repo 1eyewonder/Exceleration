@@ -8,6 +8,7 @@ using Microsoft.Office.Interop.Excel;
 using Exceleration.Helpers;
 using Exceleration.Helpers.Enums;
 using Exceleration.Helpers.Extensions;
+using Exceleration.CoreHelpers;
 
 namespace Exceleration.Commands
 {
@@ -125,6 +126,25 @@ namespace Exceleration.Commands
             else
             {
                 throw new Exception($"The header, {headerText}, could not be found in the desired row.");
+            }
+        }
+
+        public void Test(Excel.Workbook workbook, Excel.Worksheet activeSheet, string objectMap, string dataRange)
+        {
+            Excel.Worksheet worksheet = workbook.GetWorksheet("Object Maps");
+            var objectMapHelper = new ObjectMapHelper(worksheet);
+
+            if (worksheet.NamedRangeExists(objectMap))
+            {
+                var dictionary = objectMapHelper.GetObjectMap(objectMap);
+                //var item = worksheet.Range[range].ConvertToDataTable();
+                
+
+                if (activeSheet.IsRange(dataRange))
+                {
+                    var someTable = activeSheet.Range[dataRange].ConvertToDataTable(dictionary);
+                    Console.WriteLine("test");
+                }
             }
         }
     }    

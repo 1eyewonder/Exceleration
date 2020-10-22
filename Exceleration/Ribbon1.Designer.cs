@@ -39,6 +39,7 @@
             this.group2 = this.Factory.CreateRibbonGroup();
             this.AddCommandsButton = this.Factory.CreateRibbonButton();
             this.AddTemplateButton = this.Factory.CreateRibbonButton();
+            this.AddObjectMapButton = this.Factory.CreateRibbonButton();
             this.RunButton = this.Factory.CreateRibbonButton();
             this.AddWorkbookCommandButton = this.Factory.CreateRibbonButton();
             this.AddWorksheetCommandsButton = this.Factory.CreateRibbonButton();
@@ -63,6 +64,7 @@
             // 
             this.group1.Items.Add(this.AddCommandsButton);
             this.group1.Items.Add(this.AddTemplateButton);
+            this.group1.Items.Add(this.AddObjectMapButton);
             this.group1.Items.Add(this.RunButton);
             this.group1.Label = "Core";
             this.group1.Name = "group1";
@@ -95,6 +97,15 @@
             this.AddTemplateButton.Name = "AddTemplateButton";
             this.AddTemplateButton.ShowImage = true;
             this.AddTemplateButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.AddTemplateButton_Click);
+            // 
+            // AddObjectMapButton
+            // 
+            this.AddObjectMapButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.AddObjectMapButton.Image = global::Exceleration.Properties.Resources.outline_explore_black_18dp;
+            this.AddObjectMapButton.Label = "Add Object Map";
+            this.AddObjectMapButton.Name = "AddObjectMapButton";
+            this.AddObjectMapButton.ShowImage = true;
+            this.AddObjectMapButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.AddObjectMapButton_Click);
             // 
             // RunButton
             // 
@@ -183,6 +194,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton AddWorksheetCommandsButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton AddFilterCommandsButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton AddDataCommandsButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton AddObjectMapButton;
     }
 
     partial class ThisRibbonCollection

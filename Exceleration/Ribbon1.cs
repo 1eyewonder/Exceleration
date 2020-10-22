@@ -215,6 +215,26 @@ namespace Exceleration
             stylingRange.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
         }
 
+        private void AddObjectMap()
+        {
+            // Attempts to find a currently existing Command worksheet
+            Excel.Workbook workbook = Globals.ThisAddIn.Application.ActiveWorkbook;
+            var worksheet = workbook.GetWorksheets().FirstOrDefault(x => x.Name == "Object Maps");
+
+            // Adds a worksheet named Commands if it does not already exist
+            worksheet = workbook.CreateNewWorksheet("Object Maps");
+
+            // Adds column headers to command table
+            worksheet.Range["A1"].Value = "Property Name";
+            worksheet.Range["B1"].Value = "Property Type";
+
+            // Styles the command table
+            var stylingRange = (Excel.Range)worksheet.Range["A:B"];
+            stylingRange.ColumnWidth = 45;
+            stylingRange.Cells.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            stylingRange.Cells.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+        }
+
         private void AddWorkbookCommands(object sender, RibbonControlEventArgs e)
         {
             AddRowValidation(CommandType.Workbook, nameof(WorkbookCommands), nameof(WorkbookOptions), nameof(ReferenceOptions));
@@ -345,6 +365,11 @@ namespace Exceleration
         private void AddDataCommandsButton_Click(object sender, RibbonControlEventArgs e)
         {
             AddRowValidation(CommandType.Data, nameof(DataCommands), nameof(MatchValueOptions));
+        }
+
+        private void AddObjectMapButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            AddObjectMap();
         }
     }
 }

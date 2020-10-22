@@ -14,3 +14,5 @@ C:\GitHub\Exceleration\Exceleration\obj\Debug\Exceleration.csproj.CoreCompileInp
 C:\GitHub\Exceleration\Exceleration\obj\Debug\Exceleration.csproj.CopyComplete
 C:\GitHub\Exceleration\Exceleration\obj\Debug\Exceleration.dll
 C:\GitHub\Exceleration\Exceleration\obj\Debug\Exceleration.pdb
+C:\GitHub\Exceleration\Exceleration\bin\Debug\Newtonsoft.Json.dll
+C:\GitHub\Exceleration\Exceleration\bin\Debug\Newtonsoft.Json.xml

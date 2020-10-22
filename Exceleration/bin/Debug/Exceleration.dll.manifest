@@ -113,6 +113,16 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Numerics" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Runtime.Serialization" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
       <assemblyIdentity name="System.Windows.Forms" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
     </dependentAssembly>
   </dependency>
@@ -127,26 +137,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Exceleration.dll" size="85504">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Exceleration.dll" size="89088">
       <assemblyIdentity name="Exceleration" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>/5r+1yBfRpb0rF+oW6l8ZS2pRV4GXfI5ixmT4v10o6c=</dsig:DigestValue>
+        <dsig:DigestValue>9cqiLoW6QbyMZJqF1fpoEBxB3uJopu+wzDHlX/xDbCQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Exceleration.Helpers.dll" size="40960">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Exceleration.Helpers.dll" size="43520">
       <assemblyIdentity name="Exceleration.Helpers" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>H/wCaPYwd7/zX2iW/Ib7h54Y+0LBJh12xrHsIvbA3IQ=</dsig:DigestValue>
+        <dsig:DigestValue>c9fVnTiXu2QWKo32AyRgJc8UiwMq3DneER9S+ehGv3I=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -159,6 +169,18 @@
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
         <dsig:DigestValue>jLCTF8Mm6bD4PDN+rnzN6q0+ReXaNgPh68kMWgatFwI=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Newtonsoft.Json.dll" size="700336">
+      <assemblyIdentity name="Newtonsoft.Json" version="12.0.0.0" publicKeyToken="30AD4FE6B2A6AEED" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>f5ErKKB8Im4L46z7L1fwUFOKugEA+h8L8sOfGh8dqBQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -223,4 +245,4 @@
       </vstov4:customizations>
     </vstav3:application>
   </vstav3:addIn>
-<publisherIdentity name="CN=DESKTOP-8EDMVQ7\brons" issuerKeyHash="c049e2967ec06b7b6e3d7aa6e016ba5d54e3d0d9" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>dBA+dU0XK6GrUR+EuKIqEd3KpBepJgb0IOYRdXLFXE4=</DigestValue></Reference></SignedInfo><SignatureValue>vmFGS/1/YONoiL7qbXLuateOJnf2tqSye5aY2n2URlrJB1OxNnQkGYKyaW8W6dXjTXfyXLjpNhjai7yZyBeder8Tdvl3ibWxhou0HZ2JRdPO724sXj4FL3M7mqCe3aZ/uqTRWEz0WJbLyCeu2SRpOnjSlkrV6ZXzLdQZ1fnUpqE=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>1QbklNSCpD5KwjyEWgzDNWE0iMPrfA0UQBBnJPpSXsaaxvn1rrp5LrNXSAgZGs7f+RRkCBrbjvwxJOemXNtHEpBT4wtXbbFKTDiozCbWxSLoB6oRfVVPKCdoxzdNR76dHpSXi/kkGTfZ/LPVo7wWb/OseaPm87cLO+JeGcER0iU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="4e5cc5727511e620f40626a917a4cadd112aa2b8841f51aba12b174d753e1074" Description="" Url=""><as:assemblyIdentity name="Exceleration.dll" version="1.0.0.0" publicKeyToken="94e5e41c97e3baac" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=DESKTOP-8EDMVQ7\brons</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>P6imLjLNGymI98qugCcVCEjS7dJSOO1I6Pm9iMSjiJQ=</DigestValue></Reference></SignedInfo><SignatureValue>JVHPSMFJjdenESMYdFAUFFHGdUqYka5kKcPFGlILqthkg+FxggAMyZoivhk5ljX2y3hUCdwA4GOcOOPCSFb2ssc2myTZAWj8xe1BH3Mg8BOB6IVElZAy/2J2SpXbo3PFuGRFfs2FAp4+rgjgpMwGujHuPEJZKhsShZlK209MqaA=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>1QbklNSCpD5KwjyEWgzDNWE0iMPrfA0UQBBnJPpSXsaaxvn1rrp5LrNXSAgZGs7f+RRkCBrbjvwxJOemXNtHEpBT4wtXbbFKTDiozCbWxSLoB6oRfVVPKCdoxzdNR76dHpSXi/kkGTfZ/LPVo7wWb/OseaPm87cLO+JeGcER0iU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB7TCCAVagAwIBAgIQF5EjC0jvU7dNK26i25J2WDANBgkqhkiG9w0BAQsFADA1MTMwMQYDVQQDHioARABFAFMASwBUAE8AUAAtADgARQBEAE0AVgBRADcAXABiAHIAbwBuAHMwHhcNMjAwOTI2MjExMjM4WhcNMjEwOTI3MDMxMjM4WjA1MTMwMQYDVQQDHioARABFAFMASwBUAE8AUAAtADgARQBEAE0AVgBRADcAXABiAHIAbwBuAHMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBANUG5JTUgqQ+SsI8hFoMwzVhNIjD63wNFEAQZyT6Ul7Gmsb59a66eS6zV0gIGRrO3/kUZAga2478MSTnplzbRxKQU+MLV22xSkw4qMwm1sUi6AeqEX1VTygnaMc3TUe+nR6Ul4v5JBk32fyz1aO8Fm/zrHmj5vO3CzviXhnBEdIlAgMBAAEwDQYJKoZIhvcNAQELBQADgYEAtZBg/MaTCLaRLhJGp1vmMdfh6uYVY7o9tHnP7OKHR+TfCFPzxBXvEh7eNgwyjDmBiWpzkLu6H/6bQAvQwwdXXx7xLzSubJGByPmZ2xeAJTEiupf6AKYRaWDOEClA90gBd2Kqv5YYm64zkoV2xza79iw4pqnJdPORpNT+Ej3kooo=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
+<publisherIdentity name="CN=DESKTOP-8EDMVQ7\brons" issuerKeyHash="c049e2967ec06b7b6e3d7aa6e016ba5d54e3d0d9" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>NgPg7LEmkD6kuhmdsd5d+yNrGLxp6Ow0tRCfjQv8uUs=</DigestValue></Reference></SignedInfo><SignatureValue>ivCv3vYrlM55v/h5/ceMZT7bOdRx5OSgH3vtwi9+m0vx6oyGT+nbGJN3+fTLMCVkGAMGd1vSAXHPg4DvfL8aOpUeW8OJng74ttR9v8UkPbK3ZL7+IDRMA4alCHvvw6gnX72nvgC5NP5mmcMU6gd/mVfHrErj5kEAMyat8XbWs/Q=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>1QbklNSCpD5KwjyEWgzDNWE0iMPrfA0UQBBnJPpSXsaaxvn1rrp5LrNXSAgZGs7f+RRkCBrbjvwxJOemXNtHEpBT4wtXbbFKTDiozCbWxSLoB6oRfVVPKCdoxzdNR76dHpSXi/kkGTfZ/LPVo7wWb/OseaPm87cLO+JeGcER0iU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="4bb9fc0b8d9f10b534ece869bc186b23fb5ddeb19d19baa43e9026b1ece00336" Description="" Url=""><as:assemblyIdentity name="Exceleration.dll" version="1.0.0.0" publicKeyToken="94e5e41c97e3baac" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=DESKTOP-8EDMVQ7\brons</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>gqbLJbJvWwOcUU0lr6QjJL6754zQipz+a9CL57n1V8o=</DigestValue></Reference></SignedInfo><SignatureValue>iIoDDOhk+ktGdbC5kGaAS8TVTwc1YfQH/nlOuEz38kTCfUZjXduD5UmryO5g0qxDByNGe8NxTcXAh+8Tdxzqox3lj+6f2gMOr1L/mpSejRHQJvk5meCL5mck3PRVNAeBa6WohM2RAloiO6yfEqnxjGTOYRXzkPYhCVISW22zxOE=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>1QbklNSCpD5KwjyEWgzDNWE0iMPrfA0UQBBnJPpSXsaaxvn1rrp5LrNXSAgZGs7f+RRkCBrbjvwxJOemXNtHEpBT4wtXbbFKTDiozCbWxSLoB6oRfVVPKCdoxzdNR76dHpSXi/kkGTfZ/LPVo7wWb/OseaPm87cLO+JeGcER0iU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB7TCCAVagAwIBAgIQF5EjC0jvU7dNK26i25J2WDANBgkqhkiG9w0BAQsFADA1MTMwMQYDVQQDHioARABFAFMASwBUAE8AUAAtADgARQBEAE0AVgBRADcAXABiAHIAbwBuAHMwHhcNMjAwOTI2MjExMjM4WhcNMjEwOTI3MDMxMjM4WjA1MTMwMQYDVQQDHioARABFAFMASwBUAE8AUAAtADgARQBEAE0AVgBRADcAXABiAHIAbwBuAHMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBANUG5JTUgqQ+SsI8hFoMwzVhNIjD63wNFEAQZyT6Ul7Gmsb59a66eS6zV0gIGRrO3/kUZAga2478MSTnplzbRxKQU+MLV22xSkw4qMwm1sUi6AeqEX1VTygnaMc3TUe+nR6Ul4v5JBk32fyz1aO8Fm/zrHmj5vO3CzviXhnBEdIlAgMBAAEwDQYJKoZIhvcNAQELBQADgYEAtZBg/MaTCLaRLhJGp1vmMdfh6uYVY7o9tHnP7OKHR+TfCFPzxBXvEh7eNgwyjDmBiWpzkLu6H/6bQAvQwwdXXx7xLzSubJGByPmZ2xeAJTEiupf6AKYRaWDOEClA90gBd2Kqv5YYm64zkoV2xza79iw4pqnJdPORpNT+Ej3kooo=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
