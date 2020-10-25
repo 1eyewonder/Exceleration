@@ -63,6 +63,7 @@ namespace Exceleration
             counter = AddCommands(workbook, nameof(CodeCommands), counter, CommandHelper.GetCodeCommands());
             counter = AddCommands(workbook, nameof(FilterCommands), counter, CommandHelper.GetFilterCommands());
             counter = AddCommands(workbook, nameof(DataCommands), counter, CommandHelper.GetDataCommands());
+            counter = AddCommands(workbook, nameof(CsvCommands), counter, CommandHelper.GetCsvCommands());
 
             #region Styling
             // Styles the command table
@@ -370,6 +371,11 @@ namespace Exceleration
         private void AddObjectMapButton_Click(object sender, RibbonControlEventArgs e)
         {
             AddObjectMap();
+        }
+
+        private void AddCsvCommandsButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            AddRowValidation(CommandType.Csv, nameof(CsvCommands));
         }
     }
 }

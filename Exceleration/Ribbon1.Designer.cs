@@ -36,17 +36,18 @@
         {
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
-            this.group2 = this.Factory.CreateRibbonGroup();
             this.AddCommandsButton = this.Factory.CreateRibbonButton();
             this.AddTemplateButton = this.Factory.CreateRibbonButton();
             this.AddObjectMapButton = this.Factory.CreateRibbonButton();
             this.RunButton = this.Factory.CreateRibbonButton();
+            this.group2 = this.Factory.CreateRibbonGroup();
             this.AddWorkbookCommandButton = this.Factory.CreateRibbonButton();
             this.AddWorksheetCommandsButton = this.Factory.CreateRibbonButton();
             this.RangeCommandsButton = this.Factory.CreateRibbonButton();
             this.AddCodeCommandsButton = this.Factory.CreateRibbonButton();
             this.AddFilterCommandsButton = this.Factory.CreateRibbonButton();
             this.AddDataCommandsButton = this.Factory.CreateRibbonButton();
+            this.AddCsvCommandsButton = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
@@ -68,17 +69,6 @@
             this.group1.Items.Add(this.RunButton);
             this.group1.Label = "Core";
             this.group1.Name = "group1";
-            // 
-            // group2
-            // 
-            this.group2.Items.Add(this.AddWorkbookCommandButton);
-            this.group2.Items.Add(this.AddWorksheetCommandsButton);
-            this.group2.Items.Add(this.RangeCommandsButton);
-            this.group2.Items.Add(this.AddCodeCommandsButton);
-            this.group2.Items.Add(this.AddFilterCommandsButton);
-            this.group2.Items.Add(this.AddDataCommandsButton);
-            this.group2.Label = "Command Options";
-            this.group2.Name = "group2";
             // 
             // AddCommandsButton
             // 
@@ -115,6 +105,18 @@
             this.RunButton.Name = "RunButton";
             this.RunButton.ShowImage = true;
             this.RunButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.RunButton_Click);
+            // 
+            // group2
+            // 
+            this.group2.Items.Add(this.AddWorkbookCommandButton);
+            this.group2.Items.Add(this.AddWorksheetCommandsButton);
+            this.group2.Items.Add(this.RangeCommandsButton);
+            this.group2.Items.Add(this.AddCodeCommandsButton);
+            this.group2.Items.Add(this.AddFilterCommandsButton);
+            this.group2.Items.Add(this.AddDataCommandsButton);
+            this.group2.Items.Add(this.AddCsvCommandsButton);
+            this.group2.Label = "Command Options";
+            this.group2.Name = "group2";
             // 
             // AddWorkbookCommandButton
             // 
@@ -164,6 +166,14 @@
             this.AddDataCommandsButton.ShowImage = true;
             this.AddDataCommandsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.AddDataCommandsButton_Click);
             // 
+            // AddCsvCommandsButton
+            // 
+            this.AddCsvCommandsButton.Image = global::Exceleration.Properties.Resources.outline_description_black_18dp;
+            this.AddCsvCommandsButton.Label = "Add CSV Commands";
+            this.AddCsvCommandsButton.Name = "AddCsvCommandsButton";
+            this.AddCsvCommandsButton.ShowImage = true;
+            this.AddCsvCommandsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.AddCsvCommandsButton_Click);
+            // 
             // Ribbon1
             // 
             this.Name = "Ribbon1";
@@ -195,6 +205,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton AddFilterCommandsButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton AddDataCommandsButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton AddObjectMapButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton AddCsvCommandsButton;
     }
 
     partial class ThisRibbonCollection

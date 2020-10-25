@@ -1,6 +1,6 @@
-﻿using Microsoft.Office.Interop.Excel;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -541,6 +541,33 @@ namespace Exceleration.Helpers.Extensions
             {
                 throw new Exception($"The range, {range}, does not exist on the current worksheet, {worksheet.Name}");
             }
+        }
+
+        public static void WriteFromDataTable(this Excel.Worksheet worksheet, DataTable dataTable, Excel.Range cellPlacement)
+        {
+            // Converts data table to array
+            object[,] array = new object[dataTable.Rows.Count, dataTable.Columns.Count];
+            for (int row = 0; row < dataTable.Rows.Count; row++)
+            {
+                DataRow dataRow = dataTable.Rows[row];
+                for (int column = 0; column < dataTable.Columns.Count; column++)
+                {
+                    array[row, column] = dataRow[column].ToString().Trim('"');
+                }
+            }
+
+            if (cellPlacement.IsSingularCell())
+            {
+                // Write array to Excel range. Looping through cells will be too slow for large datasets
+                Excel.Range c1 = cellPlacement;
+                Excel.Range c2 = (Excel.Range)worksheet.Cells[cellPlacement.Row + dataTable.Rows.Count - 1, cellPlacement.Column + dataTable.Columns.Count - 1];
+                Excel.Range range = worksheet.Range[c1, c2];
+                range.Value = array;
+            }
+            else
+            {
+                throw new Exception("Please ensure a singular cell is chosen for the input range");
+            }            
         }
         #endregion
 

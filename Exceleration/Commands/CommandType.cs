@@ -14,5 +14,6 @@ namespace Exceleration.Commands
         public const string Code = "CODE";
         public const string Filter = "FILTER";
         public const string Data = "DATA";
+        public const string Csv = "CSV";
     }
 }

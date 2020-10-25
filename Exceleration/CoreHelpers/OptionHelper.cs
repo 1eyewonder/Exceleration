@@ -60,7 +60,6 @@ namespace Exceleration.CoreHelpers
             return options.GetFieldValues();
         }
 
-
         public static ReferenceEnum GetReferenceEnumFromString(string reference)
         {
             switch (reference)

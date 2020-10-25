@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -59,5 +60,49 @@ namespace Exceleration.Helpers
         {
             return attributes & ~attributesToRemove;
         }     
+
+        /// <summary>
+        /// Reads data from a csv file and converts it to
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="delimiter"></param>
+        /// <returns></returns>
+        public static DataTable GetDataTableFromFile(string filePath, string delimiter, string fileType = ".csv")
+        {
+            DataTable dataTable = new DataTable();
+
+            if (IsValidPath(filePath) && filePath.Substring(filePath.Length - fileType.Length) == fileType)
+            {
+                using (StreamReader reader = new StreamReader(filePath))
+                {
+                    // Used none enum in case csv data contains a blank value
+                    string[] headers = reader.ReadLine().Split(new string[] { delimiter }, StringSplitOptions.None);
+
+                    foreach (string header in headers)
+                    {
+                        dataTable.Columns.Add(header);
+                    }
+
+                    while (!reader.EndOfStream)
+                    {
+                        string[] rows = reader.ReadLine().Split(new string[] { delimiter }, StringSplitOptions.None);
+                        DataRow row = dataTable.NewRow();
+
+                        for (int i = 0; i < headers.Length; i++)
+                        {
+                            row[i] = rows[i];
+                        }
+
+                        dataTable.Rows.Add(row);
+                    }
+
+                    return dataTable;
+                }                
+            }
+            else
+            {
+                throw new Exception("File path was not valid. Please try again");
+            }
+        }
     }
 }

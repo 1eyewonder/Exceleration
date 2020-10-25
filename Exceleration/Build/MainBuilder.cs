@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 using Exceleration.Helpers.Extensions;
+using System.Drawing;
 
 namespace Exceleration.Build
 {   
@@ -19,6 +20,7 @@ namespace Exceleration.Build
         private readonly RangeCommands _rangeCommands;
         private readonly FilterCommands _filterCommands;
         private readonly DataCommands _dataCommands;
+        private readonly CsvCommands _csvCommands;
         private bool _inRepeat = false;
         private int _repeatStart = 0;
         private int _repeatEnd = 0;
@@ -32,6 +34,7 @@ namespace Exceleration.Build
             _worksheetCommands = new WorksheetCommands();
             _filterCommands = new FilterCommands();
             _dataCommands = new DataCommands();
+            _csvCommands = new CsvCommands();
         }
 
         /// <summary>
@@ -273,10 +276,6 @@ namespace Exceleration.Build
                                 rangeAddress = _rangeCommands.GetHeaderCellCommand(workbook.ActiveSheet, target, name);
                                 SetValue(i, auxillaryColumn, rangeAddress);
                                 break;
-
-                            case "TEST":
-                                _rangeCommands.Test(workbook, workbook.ActiveSheet, name, target);
-                                break;
                         }
 
                         break;
@@ -382,6 +381,23 @@ namespace Exceleration.Build
                             case DataCommands.FindAndReplace:
                                 bool matchCase = GetBoolean(i, referenceColumn);
                                 _dataCommands.FindAndReplaceCommand(workbook.ActiveSheet, target, name, auxillary, option, matchCase);
+                                break;
+                        }
+
+                        break;
+                    #endregion
+
+                    #region Csv
+                    case CommandType.Csv:
+
+                        switch(command)
+                        {
+                            case CsvCommands.WriteToCsv:
+                                _csvCommands.WriteToCsvCommand(workbook, workbook.ActiveSheet, name, target, auxillary, option);
+                                break;
+
+                            case CsvCommands.ReadFromCsv:
+                                _csvCommands.ReadFromCsvCommand(workbook.ActiveSheet, target, option, auxillary);
                                 break;
                         }
 

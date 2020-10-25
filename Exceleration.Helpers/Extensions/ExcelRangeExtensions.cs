@@ -65,6 +65,23 @@ namespace Exceleration.Helpers.Extensions
         }
 
         /// <summary>
+        /// Returns true if all cells in range are empty
+        /// </summary>
+        /// <param name="range">Target range</param>
+        /// <returns></returns>
+        public static bool IsEmpty(this Excel.Range range)
+        {
+            if (range.Value2 != null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Adds a data filter to a range
         /// </summary>
         /// <param name="range">Target range, including the header row</param>
@@ -166,48 +183,60 @@ namespace Exceleration.Helpers.Extensions
             // Initialize data table and convert range to array
             DataTable dataTable = new DataTable();
             object[,] data = range.Value2;
-            
-            for (int columnCount = 1; columnCount <= range.Columns.Count; columnCount++)
+
+            int columnCount = 0;
+            int rowCount = 0;
+
+            try
             {
-                // Create new column in data table
-                var column = new DataColumn();
-                string columnName = data[1, columnCount].ToString();
-
-                // Checks what type is associate with the column property
-                if (propertyMap.TryGetValue(columnName, out var output))
+                for (columnCount = 1; columnCount <= range.Columns.Count; columnCount++)
                 {
-                    column.DataType = output;
-                    column.ColumnName = columnName;
-                    dataTable.Columns.Add(column);
-                }
-                else
-                {
-                    throw new Exception();
-                }                        
+                    // Create new column in data table
+                    var column = new DataColumn();
+                    string columnName = data[1, columnCount].ToString();
 
-                for (int rowCount = 2; rowCount <= range.Rows.Count; rowCount ++)
-                {                    
-                    dynamic cellValue;
-                    DataRow row;
-
-                    // Converts value in array to type from property map
-                    var item = data[rowCount, columnCount];
-                    cellValue = Convert.ChangeType(item, output);                    
-
-                    // Creates new row in data table if first item for the row
-                    if (columnCount == 1)
+                    // Checks what type is associate with the column property
+                    if (propertyMap.TryGetValue(columnName, out var output))
                     {
-                        row = dataTable.NewRow();
-                        row[columnName] = cellValue;
-                        dataTable.Rows.Add(row);
+                        column.DataType = output;
+                        column.ColumnName = columnName;
+                        dataTable.Columns.Add(column);
                     }
                     else
                     {
-                        row = dataTable.Rows[rowCount-2];
-                        row[columnName] = cellValue;
+                        throw new Exception();
                     }
-                }                
+
+                    for (rowCount = 2; rowCount <= range.Rows.Count; rowCount++)
+                    {
+                        dynamic cellValue;
+                        DataRow row;
+
+                        // Converts value in array to type from property map
+                        var item = data[rowCount, columnCount];
+                        cellValue = Convert.ChangeType(item, output);
+
+                        // Creates new row in data table if first item for the row
+                        if (columnCount == 1)
+                        {
+                            row = dataTable.NewRow();
+                            row[columnName] = cellValue;
+                            dataTable.Rows.Add(row);
+                        }
+                        else
+                        {
+                            row = dataTable.Rows[rowCount - 2];
+                            row[columnName] = cellValue;
+                        }
+                    }
+                }
             }
+
+            catch
+            {
+                throw new Exception($"There was an error converting the value found in Row:{rowCount} Column:{columnCount} of the dataset");
+            }
+            
 
             return dataTable;
         }

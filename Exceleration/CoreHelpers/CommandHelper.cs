@@ -96,5 +96,14 @@ namespace Exceleration.CoreHelpers
                 new CommandItem(CommandType.Data, DataCommands.FindAndReplace,"See match value options. Sets the search parameters to the whole cell value or a part of it.", "Set true to match case of search. False will not match the case.", "Text to search for", "Cell range find and replace is to be conducted in. Can use named ranges.", "Value to replace finding(s)."),
             };
         }
+
+        public static List<CommandItem> GetCsvCommands()
+        {
+            return new List<CommandItem>
+            {
+                 new CommandItem(CommandType.Csv, CsvCommands.WriteToCsv,"Delimiter to be used in the file", "Not needed for this command", "Named range found on Object Maps worksheet that correlates to data", "Data range, including headers, to be written into .csv file", "Filepath where data will be saved at."),
+                 new CommandItem(CommandType.Csv, CsvCommands.ReadFromCsv,"Delimiter used in the file", "Not needed for this command", "Not needed for this command", "Filepath", "Singular cell range where data is to be placed. Cell will be the first and uppermost left of the dataset"),
+            };
+        }
     }
 }
