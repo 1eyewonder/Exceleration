@@ -46,11 +46,11 @@ namespace Exceleration.CoreHelpers
 
             int i = startCell.Row;
 
-            while (!string.IsNullOrEmpty(GetString(i, nameColumn)))
+            while (!string.IsNullOrEmpty(_getString(i, nameColumn)))
             {
-                name = GetString(i, nameColumn);
+                name = _getString(i, nameColumn);
 
-                var typeEnum = EnumHelper.GetEnumFromString(GetString(i, typeColumn));
+                var typeEnum = EnumHelper.GetEnumFromString(_getString(i, typeColumn));
                 type = ReflectionHelper.GetTypeFromEnum(typeEnum);
 
                 returnDictionary.Add(name, type);

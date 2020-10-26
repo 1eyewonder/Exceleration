@@ -24,7 +24,7 @@ namespace Exceleration.Build
 
         #region Value Helpers 
 
-        protected string GetString(int row, int column)
+        protected string _getString(int row, int column)
         {
             var range = _worksheet.Cells[row, column];
 
@@ -53,7 +53,7 @@ namespace Exceleration.Build
         /// <param name="row">Row number</param>
         /// <param name="column">Column number</param>
         /// <returns></returns>
-        protected string[] GetArrayString(int row, int column)
+        protected string[] _getArrayString(int row, int column)
         {
             var range = _worksheet.Cells[row, column];
             string[] theList = null;
@@ -67,14 +67,14 @@ namespace Exceleration.Build
             return theList;
         }
 
-        protected bool GetBoolean(int row, int column)
+        protected bool _getBoolean(int row, int column)
         {
-            var value = GetString(row, column);
+            var value = _getString(row, column);
 
             return value.ToUpper() == "TRUE" || value.ToUpper() == "YES";
         }
 
-        protected double GetDouble(int row, int column)
+        protected double _getDouble(int row, int column)
         {
             var range = _worksheet.Cells[row, column];
 
@@ -106,7 +106,7 @@ namespace Exceleration.Build
         /// <param name="row">Row number</param>
         /// <param name="column">Column number</param>
         /// <returns></returns>
-        protected int GetInt(int row, int column)
+        protected int _getInt(int row, int column)
         {
             var range = _worksheet.Cells[row, column];
 
@@ -149,26 +149,29 @@ namespace Exceleration.Build
         #region Generic Command Validation
 
         /// <summary>
-        /// Checks if commands have matching end if commands
+        /// Checks if code command has matching keyword to end its loop
         /// </summary>
-        /// <param name="row">Starting row of if statement</param>
-        /// <param name="commandColumn">Column to loop through and find matching end if command</param>
-        protected void ValidateIf(int row, int commandColumn)
+        /// <param name="row">Starting row of the code command</param>
+        /// <param name="commandColumn">Column to loop through and find matching end commands</param>
+        /// <param name="startCommand">Start command name</param>
+        /// <param name="endCommand">End command name</param>
+        /// Example start and end commands can be found in the CodeCommands class
+        protected void _validateCodeCommand(int row, int commandColumn, string startCommand, string endCommand)
         {
             var rowStart = row;
             var startRepeat = 0;
             var endRepeat = 0;
 
-            while (!string.IsNullOrEmpty(GetString(row, commandColumn)))
+            while (!string.IsNullOrEmpty(_getString(row, commandColumn)))
             {
-                var command = GetString(row, commandColumn).ToUpper();
+                var command = _getString(row, commandColumn).ToUpper();
 
-                if (command == CodeCommands.If)
+                if (command == startCommand)
                 {
                     startRepeat++;
                 }
 
-                if (command == CodeCommands.EndIf)
+                if (command == endCommand)
                 {
                     endRepeat++;
                 }
@@ -183,39 +186,41 @@ namespace Exceleration.Build
 
             if (startRepeat != endRepeat)
             {
-                throw new Exception($"If on line {rowStart} on worksheet {_worksheet.Name} does not have a matching end if");
+                throw new Exception($"{startCommand} on line {rowStart} on worksheet {_worksheet.Name} does not have a matching {endCommand}");
             }
         }
 
         /// <summary>
-        /// Returns the row number where the matching end if is located
+        /// Returns the row number where the match end command is located
         /// </summary>
-        /// <param name="row">Row number</param>
-        /// <param name="commandColumn">Column to loop through and find matching end if command</param>
+        /// <param name="row">Starting row of the code command</param>
+        /// <param name="commandColumn">Column to loop through and find matching end commands</param>
+        /// <param name="startCommand">Start command name</param>
+        /// <param name="endCommand">End command name</param>
         /// <returns></returns>
-        protected int GetEndIfRow(int row, int commandColumn)
+        protected int _getEndCommandRow(int row, int commandColumn, string startCommand, string endCommand)
         {
-            var ifcount = 0;
-            var endIfCount = 0;
+            var startCommandCount = 0;
+            var endCommandCount = 0;
 
-            var endIfLocations = new List<int>();
+            var endCommandLocations = new List<int>();
 
-            while (!string.IsNullOrEmpty(GetString(row, commandColumn)))
+            while (!string.IsNullOrEmpty(_getString(row, commandColumn)))
             {
-                var command = GetString(row, commandColumn).ToUpper();
+                var command = _getString(row, commandColumn).ToUpper();
 
-                if (command == CodeCommands.If)
+                if (command == startCommand)
                 {
-                    ifcount++;
+                    startCommandCount++;
                 }
 
-                if (command == CodeCommands.EndIf)
+                if (command == endCommand)
                 {
-                    endIfCount++;
-                    endIfLocations.Add(row);
+                    endCommandCount++;
+                    endCommandLocations.Add(row);
                 }
 
-                if (ifcount == endIfCount)
+                if (startCommandCount == endCommandCount)
                 {
                     break;
                 }
@@ -223,75 +228,7 @@ namespace Exceleration.Build
                 row++;
             }
 
-            return endIfLocations.Max();
-        }
-
-        protected int GetEndRepeatRow(int row, int commandColumn)
-        {
-            var rowStart = row;
-            var repeatCount = 0;
-            var endRepeatCount = 0;
-
-            var endRepeatLocation = new List<int>();
-
-            while (!string.IsNullOrEmpty(GetString(row, commandColumn)))
-            {
-                var command = GetString(row, commandColumn).ToUpper();
-
-                if (command == CodeCommands.Repeat)
-                {
-                    repeatCount++;
-                }
-
-                if (command == CodeCommands.EndRepeat)
-                {
-                    endRepeatCount++;
-                    endRepeatLocation.Add(row);
-                }
-
-                if (repeatCount == endRepeatCount)
-                {
-                    break;
-                }
-
-                row++;
-            }
-
-            return endRepeatLocation.Max();
-        }
-
-        protected void ValidateRepeat(int row, int commandColumn)
-        {
-            var rowStart = row;
-            var startRepeat = 0;
-            var endRepeat = 0;
-
-            while (!string.IsNullOrEmpty(GetString(row, commandColumn)))
-            {
-                var command = GetString(row, commandColumn).ToUpper();
-
-                if (command == CodeCommands.Repeat)
-                {
-                    startRepeat++;
-                }
-
-                if (command == CodeCommands.EndRepeat)
-                {
-                    endRepeat++;
-                }
-
-                row++;
-            }
-
-            if (startRepeat != endRepeat)
-            {
-                throw new Exception($"Start repeat on line {rowStart} on worksheet {_worksheet.Name} does not have a matching end repeat");
-            }
-
-            if (startRepeat > 1 || endRepeat > 1)
-            {
-                throw new Exception("Nested repeats are not supported");
-            }
+            return endCommandLocations.Max();
         }
 
         #endregion

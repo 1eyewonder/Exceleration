@@ -195,6 +195,12 @@ namespace Exceleration.Helpers.Extensions
                     var column = new DataColumn();
                     string columnName = data[1, columnCount].ToString();
 
+                    // Only writes the data that is included in the object map
+                    if (!propertyMap.ContainsKey(columnName))
+                    {
+                        continue;
+                    }
+
                     // Checks what type is associate with the column property
                     if (propertyMap.TryGetValue(columnName, out var output))
                     {

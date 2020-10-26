@@ -15,5 +15,7 @@ namespace Exceleration.Commands
         public const string EndRepeat = "END REPEAT";
         public const string Comment = "COMMENT";
         public const string Stop = "STOP";
+        public const string Query = "QUERY";
+        public const string EndQuery = "END QUERY";
     }
 }

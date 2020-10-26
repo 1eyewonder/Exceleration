@@ -82,10 +82,10 @@ namespace Exceleration.Build
             int i = startCell.Row + 1;
 
             // Will continue to run until there is an empty row found in the command type column
-            while (!string.IsNullOrEmpty(GetString(i, typeColumn)))
+            while (!string.IsNullOrEmpty(_getString(i, typeColumn)))
             {
-                var commandType = GetString(i, typeColumn).ToUpper();
-                var command = GetString(i, commandColumn).ToUpper();
+                var commandType = _getString(i, typeColumn).ToUpper();
+                var command = _getString(i, commandColumn).ToUpper();
                 string option;
                 string reference;
                 string name;
@@ -103,11 +103,11 @@ namespace Exceleration.Build
                 }
                 else
                 {
-                    option = GetString(i, optionsColumn).ToUpper();
-                    reference = GetString(i, referenceColumn).ToUpper();
-                    name = GetString(i, nameColumn);
-                    target = GetString(i, targetColumn);
-                    auxillary = GetString(i, auxillaryColumn);
+                    option = _getString(i, optionsColumn).ToUpper();
+                    reference = _getString(i, referenceColumn).ToUpper();
+                    name = _getString(i, nameColumn);
+                    target = _getString(i, targetColumn);
+                    auxillary = _getString(i, auxillaryColumn);
                 }
                
                 switch (commandType)
@@ -288,7 +288,7 @@ namespace Exceleration.Build
                         {
                             case CodeCommands.Sub:
                                 MainBuilder runblock = null;
-                                var subName = GetString(i, targetColumn);
+                                var subName = _getString(i, targetColumn);
                                 string worksheetName;
 
                                 // Allows for calling sub-routines on different worksheets
@@ -310,14 +310,14 @@ namespace Exceleration.Build
                                 break;
 
                             case CodeCommands.If:
-                                ValidateIf(i, commandColumn);
+                                _validateCodeCommand(i, commandColumn, CodeCommands.If, CodeCommands.EndIf);
 
-                                var booleanValue = GetBoolean(i, targetColumn);
+                                var booleanValue = _getBoolean(i, targetColumn);
 
                                 // Skips to end if command line if false
                                 if (!booleanValue)
                                 {
-                                    i = GetEndIfRow(i, commandColumn);
+                                    i = _getEndCommandRow(i, commandColumn, CodeCommands.If, CodeCommands.EndIf);
                                 }
 
                                 break;
@@ -326,13 +326,20 @@ namespace Exceleration.Build
                                 throw new Exception("Program stopped");
 
                             case CodeCommands.Repeat:
-                                ValidateRepeat(i, commandColumn);
+                                _validateCodeCommand(i, commandColumn, CodeCommands.Repeat, CodeCommands.EndRepeat);
                                 _repeatStart = i;
-                                _repeatEnd = GetEndRepeatRow(i, commandColumn);
-                                _repeatCount = GetInt(i, targetColumn);
+                                _repeatEnd = _getEndCommandRow(i, commandColumn, CodeCommands.Repeat, CodeCommands.EndRepeat);
+                                _repeatCount = _getInt(i, targetColumn);
                                 _repeatIndex = 1;
                                 SetValue(i, targetColumn + 1, _repeatIndex.ToString());
                                 _inRepeat = true;
+                                break;
+
+                            case CodeCommands.Query:
+                                _validateCodeCommand(i, commandColumn, CodeCommands.Query, CodeCommands.EndQuery);
+                                
+                                // Loop through enclosed command and create dynamic query
+
                                 break;
                         }
 
@@ -345,9 +352,9 @@ namespace Exceleration.Build
                         switch(command)
                         {
                             case FilterCommands.AddDataFilter:
-                                var referenceInt = GetInt(i, referenceColumn);                              
-                                var criteriaList = GetArrayString(i, nameColumn);
-                                auxillary = GetString(i, auxillaryColumn);
+                                var referenceInt = _getInt(i, referenceColumn);                              
+                                var criteriaList = _getArrayString(i, nameColumn);
+                                auxillary = _getString(i, auxillaryColumn);
 
                                 var filterType = OptionHelper.GetExcelAutoFilterOperatorFromString(option);                             
                                  _filterCommands.AddDataFilterCommand(workbook.ActiveSheet, target, referenceInt, filterType, criteriaList, auxillary);
@@ -379,7 +386,7 @@ namespace Exceleration.Build
                                 break;
 
                             case DataCommands.FindAndReplace:
-                                bool matchCase = GetBoolean(i, referenceColumn);
+                                bool matchCase = _getBoolean(i, referenceColumn);
                                 _dataCommands.FindAndReplaceCommand(workbook.ActiveSheet, target, name, auxillary, option, matchCase);
                                 break;
                         }

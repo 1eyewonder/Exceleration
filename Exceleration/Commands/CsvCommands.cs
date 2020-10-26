@@ -7,6 +7,9 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Exceleration.Helpers.Extensions;
 using Exceleration.CoreHelpers;
 using Exceleration.Helpers;
+using System.Data;
+using Exceleration.Conditions;
+using Exceleration.Interfaces;
 
 namespace Exceleration.Commands
 {
@@ -49,9 +52,7 @@ namespace Exceleration.Commands
             if (worksheet.IsRange(range) || worksheet.NamedRangeExists(range))
             {
                 worksheet.WriteFromDataTable(table, worksheet.Range[range]);
-            }            
-         
-            Console.WriteLine("Hello");
+            }
         }
     }
 }
